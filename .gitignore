@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Compiled C library (rebuilt from image_process.c)
+*.dll
+*.so
+*.dylib
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Image data (user files, not source code)
+data_source/
+data_processed/
+
+# Scratch / test files
+test1.py
