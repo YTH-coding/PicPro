@@ -7,8 +7,6 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 import numpy as np
 import math
-import json
-import re
 
 class NewPic():
     def __init__(self, parent:tk.Tk):
