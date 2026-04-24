@@ -4,9 +4,12 @@ import numpy as np
 from PIL import Image, ImageTk
 from test_c.image_process import ImageProcessor
 import json
+from color import ColorMapping
+from newpic import NewPic
+import math
 
 class PicPro:
-    def __init__(self, root):
+    def __init__(self, root:tk.Tk):
         self.root = root
         self.root.title("YTH的图像处理工具集合")
         self.root.geometry("1000x700")
@@ -21,8 +24,13 @@ class PicPro:
         self.original_photo = None
         self.processed_photo = None
 
+        self.color_mapping:dict = None
+
         with open("config\color_matrix.json", 'r', encoding='utf-8') as f:
             self.color_matrix:dict[str, list[list[float]]] = json.load(f)
+        
+        with open("config\color_preset.json", "r", encoding="utf-8") as f:
+            self.color_data = json.load(f)
         
         # 设置主题颜色
         self.set_theme()
@@ -64,48 +72,92 @@ class PicPro:
     
     def create_control_panel(self, parent):
         """创建控制面板"""
-        control_frame = ttk.LabelFrame(parent, text="图像处理控制", padding=10)
+        left_frame = ttk.Frame(parent)
+        left_frame.pack(side=tk.LEFT, fill=tk.Y)
+
+        iobtn_frame = ttk.LabelFrame(left_frame, text="文件", padding=10)
+        iobtn_frame.pack(fill=tk.X, pady=5)
+
+        self.file_operate = tk.StringVar(value="文件操作")
+        # 获取矩阵名称列表
+        self.file_combo = ttk.Combobox(
+            iobtn_frame,
+            textvariable=self.file_operate,
+            values=["新建图片", "打开彩图", "打开灰图","保存图片", "关闭软件"],  # 直接写列表
+            state="readonly"
+        )
+        self.file_combo.pack(fill=tk.X, pady=5)
+        
+        self.file_combo.bind("<<ComboboxSelected>>", self.on_file_operate_selected)
+
+        control_frame = ttk.LabelFrame(left_frame, text="图像处理控制", padding=10)
         control_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 10))
 
-        # 旋转
-        self.create_rotate_bottons(control_frame)
+        basebtn_frame = ttk.Frame(control_frame)
+        basebtn_frame.pack(fill=tk.X, pady=5)
 
-        # 二值化
-        self.create_binarization_settings(control_frame)
-
-        # 反转
-        self.create_reversed_botton(control_frame)
-
-        # 灰度化
-        self.create_rgb2gray_settings(control_frame)
-
-        # 净色
-        self.create_colorclean_settings(control_frame)
-
-        # 伪彩色
-        # self.create_gray2rgb_settings(control_frame)
-
-        # 颜色矩阵
-        self.create_colormatrix(control_frame)
-    
-    def create_rotate_bottons(self, parent):
-        frame = ttk.Frame(parent)
-        frame.pack(fill=tk.X, padx=10, pady=5)
-        
-        ttk.Button(
-            frame, 
-            text="左转90度", 
+        ttk.Button(basebtn_frame, text="左转", width=6, 
             command=lambda: self.apply_rotation(clockwise=False)   # 逆时针
-        ).pack(side=tk.LEFT, padx=5)
-        
-        ttk.Button(
-            frame, 
-            text="右转90度", 
+        ).grid(row=0, column=0, padx=5)
+        ttk.Button(basebtn_frame, text="右转", width=6,
             command=lambda: self.apply_rotation(clockwise=True)    # 顺时针
-        ).pack(side=tk.RIGHT, padx=5)
+        ).grid(row=0, column=1, padx=5)
+        ttk.Button(basebtn_frame, text="反相", width=6,
+            command=self.apply_reverse
+        ).grid(row=0, column=2, padx=5)
+        ttk.Button(basebtn_frame, text="复位", width=6,
+            command=self.set_original
+        ).grid(row=0, column=3, padx=5)
+
+        notebook = ttk.Notebook(control_frame)
+        notebook.pack(fill=tk.X, pady=5)
+
+        bin_frame = self.create_binarization_settings(notebook)
+        notebook.add(bin_frame, text="二值化")
+
+        gray_frame = self.create_rgb2gray_settings(notebook)
+        notebook.add(gray_frame, text="灰度化")
+
+        clean_frame = self.create_colorclean_settings(notebook)
+        notebook.add(clean_frame, text="净色化")
+
+        self.create_colormatrix(control_frame) # 颜色矩阵
+
+        ttk.Button(control_frame, text="进行伪彩色化设置", width=9,
+            command=self.gray2color
+        ).pack(fill=tk.X, pady=5)
     
-    def create_binarization_settings(self, parent):
-        frame = ttk.LabelFrame(parent, text="颜色与二值化阈值", padding=10)
+    def on_file_operate_selected(self, event):
+        choice = self.file_combo.get()
+        if choice == "新建图片":
+            self.new_pic()
+        elif choice == "打开彩图":
+            self.load_image(mode="RGB")
+        elif choice == "打开灰图":
+            self.load_image(mode="L")
+        elif choice == "保存图片":
+            self.save_result()
+        elif choice == "退出":
+            self.root.destroy()
+        
+    def new_pic(self):
+        dialog_new_pic = NewPic(self.root)
+        dialog_new_pic.dialog.wait_window()
+
+        try:
+            img_array = dialog_new_pic.original_array
+            
+            the_times = int(math.floor(min(600/img_array.shape[0], 600/img_array.shape[1])))
+            self.original_array = np.kron(img_array, np.ones((the_times, the_times),dtype=int)).astype(np.uint8)
+
+            self.display_image(self.original_array, self.original_label, is_original=True)
+        except:
+            print("未能生成图片")
+            pass
+    
+    def create_binarization_settings(self, parent)->tk.LabelFrame:
+
+        frame = ttk.Frame(parent)
         frame.pack(fill=tk.X, pady=(0, 15))
 
         # 配置列权重（所有行共用）
@@ -116,110 +168,24 @@ class PicPro:
         frame.columnconfigure(4, weight=0)
 
         # 第0行：灰度边界
-        ttk.Label(frame, text="灰度G").grid(row=0, column=0, sticky=tk.W, pady=2)
-        self.binarization_gray_thresh = tk.IntVar(value=128)  # 初始128更合理
-        gray_slider = ttk.Scale(
-            frame, from_=0, to=255, variable=self.binarization_gray_thresh,
-            orient=tk.HORIZONTAL,
-            command=lambda e: self.update_label(self.binarization_gray_thresh_label, self.binarization_gray_thresh)
-        )
-        gray_slider.grid(row=0, column=1, sticky=tk.EW, padx=(5,5), pady=2)
-        self.binarization_gray_thresh_label = ttk.Label(frame, text=str(self.binarization_gray_thresh.get()))
-        self.binarization_gray_thresh_label.grid(row=0, column=2, padx=5)
-        ttk.Button(
-            frame, 
-            text="-", 
-            width=2,
-            command=lambda: self.reduce_value(self.binarization_gray_thresh_label, self.binarization_gray_thresh, 0)
-        ).grid(row=0, column=3, padx=(5,0))
-        ttk.Button(
-            frame, 
-            text="+", 
-            width=2,
-            command=lambda: self.increment_value(self.binarization_gray_thresh_label, self.binarization_gray_thresh, 255)
-        ).grid(row=0, column=4, padx=(5,0))
+        self.binarization_gray_var, self.binarization_gray_label = self._add_slider(frame, row=0, label_text="灰度G")
 
         # 第1行：红色边界
-        ttk.Label(frame, text="红色R").grid(row=1, column=0, sticky=tk.W, pady=2)
-        self.binarization_red_thresh = tk.IntVar(value=200)
-        red_slider = ttk.Scale(
-            frame, from_=0, to=255, variable=self.binarization_red_thresh,
-            orient=tk.HORIZONTAL,
-            command=lambda e: self.update_label(self.binarization_red_thresh_label, self.binarization_red_thresh)
-        )
-        red_slider.grid(row=1, column=1, sticky=tk.EW, padx=(5,5), pady=2)
-        self.binarization_red_thresh_label = ttk.Label(frame, text=str(self.binarization_red_thresh.get()))
-        self.binarization_red_thresh_label.grid(row=1, column=2, padx=5)
-        ttk.Button(
-            frame, 
-            text="-", 
-            width=2,
-            command=lambda: self.reduce_value(self.binarization_red_thresh_label, self.binarization_red_thresh, 0)
-        ).grid(row=1, column=3, padx=(5,0))
-        ttk.Button(
-            frame, 
-            text="+", 
-            width=2,
-            command=lambda: self.increment_value(self.binarization_red_thresh_label, self.binarization_red_thresh, 255)
-        ).grid(row=1, column=4, padx=(5,0))
+        self.binarization_red_var, self.binarization_red_label = self._add_slider(frame, row=1, label_text="红色G")
 
         # 第2行：绿色边界
-        ttk.Label(frame, text="绿色G").grid(row=2, column=0, sticky=tk.W, pady=2)
-        self.binarization_green_thresh = tk.IntVar(value=50)
-        green_slider = ttk.Scale(
-            frame, from_=0, to=255, variable=self.binarization_green_thresh,
-            orient=tk.HORIZONTAL,
-            command=lambda e: self.update_label(self.binarization_green_thresh_label, self.binarization_green_thresh)
-        )
-        green_slider.grid(row=2, column=1, sticky=tk.EW, padx=(5,5), pady=2)
-        self.binarization_green_thresh_label = ttk.Label(frame, text=str(self.binarization_green_thresh.get()))
-        self.binarization_green_thresh_label.grid(row=2, column=2, padx=5)
-        ttk.Button(
-            frame, 
-            text="-", 
-            width=2,
-            command=lambda: self.reduce_value(self.binarization_green_thresh_label, self.binarization_green_thresh, 0)
-        ).grid(row=2, column=3, padx=(5,0))
-        ttk.Button(
-            frame, 
-            text="+", 
-            width=2,
-            command=lambda: self.increment_value(self.binarization_green_thresh_label, self.binarization_green_thresh, 255)
-        ).grid(row=2, column=4, padx=(5,0))
+        self.binarization_green_var, self.binarization_green_label = self._add_slider(frame, row=2, label_text="绿色G")
 
         # 第3行：蓝色边界
-        ttk.Label(frame, text="蓝色B").grid(row=3, column=0, sticky=tk.W, pady=2)
-        self.binarization_blue_thresh = tk.IntVar(value=50)
-        blue_slider = ttk.Scale(
-            frame, from_=0, to=255, variable=self.binarization_blue_thresh,
-            orient=tk.HORIZONTAL,
-            command=lambda e: self.update_label(self.binarization_blue_thresh_label, self.binarization_blue_thresh)
-        )
-        blue_slider.grid(row=3, column=1, sticky=tk.EW, padx=(5,5), pady=2)
-        self.binarization_blue_thresh_label = ttk.Label(frame, text=str(self.binarization_blue_thresh.get()))
-        self.binarization_blue_thresh_label.grid(row=3, column=2, padx=5)
-        ttk.Button(
-            frame, 
-            text="-", 
-            width=2,
-            command=lambda: self.reduce_value(self.binarization_blue_thresh_label, self.binarization_blue_thresh, 0)
-        ).grid(row=3, column=3, padx=(5,0))
-        ttk.Button(
-            frame, 
-            text="+", 
-            width=2,
-            command=lambda: self.increment_value(self.binarization_blue_thresh_label, self.binarization_blue_thresh, 255)
-        ).grid(row=3, column=4, padx=(5,0))
+        self.binarization_blue_var, self.binarization_blue_label = self._add_slider(frame, row=3, label_text="蓝色B")
 
-    def create_reversed_botton(self, parent):        
-        ttk.Button(
-            parent, 
-            text="色彩反转", 
-            command=self.apply_reverse
-        ).pack(fill=tk.X, pady=5)
+        ttk.Button(frame, text="√ 灰度图二值化,RGB参数无用", width=2, command=self.apply_binarization).grid(row=4, column=0, columnspan=5, sticky=tk.EW, padx=5, pady=5)
 
-    def create_rgb2gray_settings(self, parent):
-        frame = ttk.LabelFrame(parent, text="灰度化", padding=10)
+        return frame      
+
+    def create_rgb2gray_settings(self, parent)->tk.LabelFrame:
+
+        frame = ttk.Frame(parent)
         frame.pack(fill=tk.X, pady=(0, 15))
 
         # 配置列权重（所有行共用）
@@ -230,79 +196,20 @@ class PicPro:
         frame.columnconfigure(4, weight=0)
 
         # 第1行：红色边界
-        ttk.Label(frame, text="红色R").grid(row=0, column=0, sticky=tk.W, pady=2)
-        self.rgb2gray_red_thresh = tk.IntVar(value=200)
-        red_slider = ttk.Scale(
-            frame, from_=0, to=255, variable=self.rgb2gray_red_thresh,
-            orient=tk.HORIZONTAL,
-            command=lambda e: self.update_label(self.rgb2gray_red_thresh_label, self.rgb2gray_red_thresh)
-        )
-        red_slider.grid(row=0, column=1, sticky=tk.EW, padx=(5,5), pady=2)
-        self.rgb2gray_red_thresh_label = ttk.Label(frame, text=str(self.rgb2gray_red_thresh.get()))
-        self.rgb2gray_red_thresh_label.grid(row=0, column=2, padx=5)
-        ttk.Button(
-            frame, 
-            text="-", 
-            width=2,
-            command=lambda: self.reduce_value(self.rgb2gray_red_thresh_label, self.rgb2gray_red_thresh, 0)
-        ).grid(row=0, column=3, padx=(5,0))
-        ttk.Button(
-            frame, 
-            text="+", 
-            width=2,
-            command=lambda: self.increment_value(self.rgb2gray_red_thresh_label, self.rgb2gray_red_thresh, 255)
-        ).grid(row=0, column=4, padx=(5,0))
+        self.rgb2gray_red_var, self.rgb2gray_red_label = self._add_slider(frame, row=0, label_text="红色R",start=76)
 
         # 第2行：绿色边界
-        ttk.Label(frame, text="绿色G").grid(row=1, column=0, sticky=tk.W, pady=2)
-        self.rgb2gray_green_thresh = tk.IntVar(value=50)
-        green_slider = ttk.Scale(
-            frame, from_=0, to=255, variable=self.rgb2gray_green_thresh,
-            orient=tk.HORIZONTAL,
-            command=lambda e: self.update_label(self.rgb2gray_green_thresh_label, self.rgb2gray_green_thresh)
-        )
-        green_slider.grid(row=1, column=1, sticky=tk.EW, padx=(5,5), pady=2)
-        self.rgb2gray_green_thresh_label = ttk.Label(frame, text=str(self.rgb2gray_green_thresh.get()))
-        self.rgb2gray_green_thresh_label.grid(row=1, column=2, padx=5)
-        ttk.Button(
-            frame, 
-            text="-", 
-            width=2,
-            command=lambda: self.reduce_value(self.rgb2gray_green_thresh_label, self.rgb2gray_green_thresh, 0)
-        ).grid(row=1, column=3, padx=(5,0))
-        ttk.Button(
-            frame, 
-            text="+", 
-            width=2,
-            command=lambda: self.increment_value(self.rgb2gray_green_thresh_label, self.rgb2gray_green_thresh, 255)
-        ).grid(row=1, column=4, padx=(5,0))
+        self.rgb2gray_green_var, self.rgb2gray_green_label = self._add_slider(frame, row=1, label_text="绿色G",start=150)
 
         # 第3行：蓝色边界
-        ttk.Label(frame, text="蓝色B").grid(row=2, column=0, sticky=tk.W, pady=2)
-        self.rgb2gray_blue_thresh = tk.IntVar(value=50)
-        blue_slider = ttk.Scale(
-            frame, from_=0, to=255, variable=self.rgb2gray_blue_thresh,
-            orient=tk.HORIZONTAL,
-            command=lambda e: self.update_label(self.rgb2gray_blue_thresh_label, self.rgb2gray_blue_thresh)
-        )
-        blue_slider.grid(row=2, column=1, sticky=tk.EW, padx=(5,5), pady=2)
-        self.rgb2gray_blue_thresh_label = ttk.Label(frame, text=str(self.rgb2gray_blue_thresh.get()))
-        self.rgb2gray_blue_thresh_label.grid(row=2, column=2, padx=5)
-        ttk.Button(
-            frame, 
-            text="-", 
-            width=2,
-            command=lambda: self.reduce_value(self.rgb2gray_blue_thresh_label, self.rgb2gray_blue_thresh, 0)
-        ).grid(row=2, column=3, padx=(5,0))
-        ttk.Button(
-            frame, 
-            text="+", 
-            width=2,
-            command=lambda: self.increment_value(self.rgb2gray_blue_thresh_label, self.rgb2gray_blue_thresh, 255)
-        ).grid(row=2, column=4, padx=(5,0))
-    
-    def create_colorclean_settings(self, parent):
-        frame = ttk.LabelFrame(parent, text="净色", padding=10)
+        self.rgb2gray_blue_var, self.rgb2gray_blue_label = self._add_slider(frame, row=2, label_text="蓝色B",start=29)
+        
+        ttk.Button(frame, text="√ 默认红76,绿150,蓝29,等比例无变化", width=2, command=self.apply_grayscale).grid(row=3, column=0, columnspan=5, sticky=tk.EW, padx=5, pady=5)
+
+        return frame
+
+    def create_colorclean_settings(self, parent)->tk.LabelFrame:
+        frame = ttk.Frame(parent)
         frame.pack(fill=tk.X, pady=(0, 15))
 
         # 配置列权重（所有行共用）
@@ -312,83 +219,23 @@ class PicPro:
         frame.columnconfigure(3, weight=0)
 
         # 第1行：二值化边界
-        ttk.Label(frame, text="二值边界").grid(row=0, column=0, sticky=tk.W, pady=2)
-        self.colorclean_binbonud_thresh = tk.IntVar(value=200)
-        binbonud_slider = ttk.Scale(
-            frame, from_=0, to=255, variable=self.colorclean_binbonud_thresh,
-            orient=tk.HORIZONTAL,
-            command=lambda e: self.update_label(self.colorclean_binbonud_thresh_label, self.colorclean_binbonud_thresh)
-        )
-        binbonud_slider.grid(row=0, column=1, sticky=tk.EW, padx=(5,5), pady=2)
-        self.colorclean_binbonud_thresh_label = ttk.Label(frame, text=str(self.colorclean_binbonud_thresh.get()))
-        self.colorclean_binbonud_thresh_label.grid(row=0, column=2, padx=5)
-        ttk.Button(
-            frame, 
-            text="-", 
-            width=2,
-            command=lambda: self.reduce_value(self.colorclean_binbonud_thresh_label, self.colorclean_binbonud_thresh, 0)
-        ).grid(row=0, column=3, padx=(5,0))
-        ttk.Button(
-            frame, 
-            text="+", 
-            width=2,
-            command=lambda: self.increment_value(self.colorclean_binbonud_thresh_label, self.colorclean_binbonud_thresh, 255)
-        ).grid(row=0, column=4, padx=(5,0))
+        self.colorclean_binbonud_var, self.colorclean_binbonud_label = self._add_slider(frame, row=0, label_text="二值边界")
 
         # 第2行：红色起始
-        ttk.Label(frame, text="红色起始").grid(row=1, column=0, sticky=tk.W, pady=2)
-        self.colorclean_redbound_thresh = tk.IntVar(value=50)
-        redbound_slider = ttk.Scale(
-            frame, from_=0, to=255, variable=self.colorclean_redbound_thresh,
-            orient=tk.HORIZONTAL,
-            command=lambda e: self.update_label(self.colorclean_redbound_thresh_label, self.colorclean_redbound_thresh)
-        )
-        redbound_slider.grid(row=1, column=1, sticky=tk.EW, padx=(5,5), pady=2)
-        self.colorclean_redbound_thresh_label = ttk.Label(frame, text=str(self.colorclean_redbound_thresh.get()))
-        self.colorclean_redbound_thresh_label.grid(row=1, column=2, padx=5)
-        ttk.Button(
-            frame, 
-            text="-", 
-            width=2,
-            command=lambda: self.reduce_value(self.colorclean_redbound_thresh_label, self.colorclean_redbound_thresh, 0)
-        ).grid(row=1, column=3, padx=(5,0))
-        ttk.Button(
-            frame, 
-            text="+", 
-            width=2,
-            command=lambda: self.increment_value(self.colorclean_redbound_thresh_label, self.colorclean_redbound_thresh, 255)
-        ).grid(row=1, column=4, padx=(5,0))
+        self.colorclean_redbound_thresh, self.colorclean_redbound_label = self._add_slider(frame, row=1, label_text="红色起始")
 
         # 第3行：红色色差
-        ttk.Label(frame, text="红色差距").grid(row=2, column=0, sticky=tk.W, pady=2)
-        self.colorclean_reddiff_thresh = tk.IntVar(value=50)
-        reddiff_slider = ttk.Scale(
-            frame, from_=0, to=255, variable=self.colorclean_reddiff_thresh,
-            orient=tk.HORIZONTAL,
-            command=lambda e: self.update_label(self.colorclean_reddiff_thresh_label, self.colorclean_reddiff_thresh)
-        )
-        reddiff_slider.grid(row=2, column=1, sticky=tk.EW, padx=(5,5), pady=2)
-        self.colorclean_reddiff_thresh_label = ttk.Label(frame, text=str(self.colorclean_reddiff_thresh.get()))
-        self.colorclean_reddiff_thresh_label.grid(row=2, column=2, padx=5)
-        ttk.Button(
-            frame, 
-            text="-", 
-            width=2,
-            command=lambda: self.reduce_value(self.colorclean_reddiff_thresh_label, self.colorclean_reddiff_thresh, 0)
-        ).grid(row=2, column=3, padx=(5,0))
-        ttk.Button(
-            frame, 
-            text="+", 
-            width=2,
-            command=lambda: self.increment_value(self.colorclean_reddiff_thresh_label, self.colorclean_reddiff_thresh, 255)
-        ).grid(row=2, column=4, padx=(5,0))
-    
+        self.colorclean_reddiff_var, self.colorclean_reddiff_label = self._add_slider(frame, row=2, label_text="红色色差")
+
+        ttk.Button(frame, text="√ 用于文件扫描处理", width=2, command=self.apply_clean_color).grid(row=3, column=0, columnspan=5, sticky=tk.EW, padx=5, pady=5)
+
+        return frame
+
     def create_colormatrix(self, parent):
-        # 创建一个 LabelFrame 作为分组容器
-        frame = ttk.LabelFrame(parent, text="颜色矩阵", padding=5)
+        frame = ttk.LabelFrame(parent, text="颜色矩阵-滤镜", padding=5)
         frame.pack(fill=tk.X, pady=(0, 10))
 
-        self.chart_type = tk.StringVar(value="颜色不变")
+        self.chart_type = tk.StringVar(value="选择滤镜")
         
         # 获取矩阵名称列表
         chart_types = list(self.color_matrix.keys())
@@ -411,24 +258,60 @@ class PicPro:
         if matrix:
             # 调用颜色矩阵处理函数
             self.apply_color_matrix(matrix)
+        
+    def gray2color(self):
+        if self.original_array is None:
+            messagebox.showwarning("警告", "请先打开一张图片")
+            return
+        if self.original_array.ndim != 2:
+            messagebox.showwarning("警告", "本操作仅能处理灰度图")
+            return
+        
+        unique_vals = np.unique(self.original_array).tolist()
+        dialog_color_mapping = ColorMapping(self.root, self.color_data, unique_vals)
+        dialog_color_mapping.dialog.wait_window()
 
-    def update_label(self, label_widget, intvar_widget):
-        """更新滑块旁边的数值标签"""
-        label_widget.config(text=str(intvar_widget.get()))
+        try:
+            self.color_mapping = dialog_color_mapping.color_mapping
+            self.processed_array = self.process.gray2color(self.original_array, self.color_mapping)
+            self.display_image(self.processed_array, self.result_label, is_original=False)
+        except:
+            print("未能设置颜色映射")
+            pass
+    
+    def _add_slider(self, parent, row, label_text, start=128, from_=0, to=255)->tuple[tk.IntVar, tk.Label]:
+        ttk.Label(parent, text=label_text).grid(row=row, column=0, sticky=tk.W, pady=2)
+        var = tk.IntVar(value=start)
 
-    def increment_value(self, label_widget, intvar, max_val=255):
+        label = ttk.Label(parent, text=str(var.get()))
+        label.grid(row=row, column=2, padx=5)
+
+        slider = ttk.Scale(
+            parent, from_=from_, to=to, variable=var,
+            orient=tk.HORIZONTAL,
+            command=lambda _: label.config(text=str(var.get())) # 这里其实是闭包，滑块数值更新
+        )
+        slider.grid(row=row, column=1, sticky=tk.EW, padx=(5,5), pady=2)
+
+        ttk.Button(parent, text="-", width=2,
+            command=lambda: self.reduce_value(label, var, from_) # 这里其实是闭包
+        ).grid(row=row, column=3, padx=(5,0))
+        ttk.Button(parent,  text="+", width=2,
+            command=lambda: self.increment_value(label, var, to) # 这里其实是闭包
+        ).grid(row=row, column=4, padx=(5,0))
+
+        return var, label
+
+    def increment_value(self, label_widget:tk.Label, intvar:tk.IntVar, max_val=255):
         new_val = intvar.get() + 1
         if new_val <= max_val:
             intvar.set(new_val)
         label_widget.config(text=str(intvar.get()))
 
-    def reduce_value(self, label_widget, intvar, min_val=0):
-        # print(intvar.get(), end="")
+    def reduce_value(self, label_widget:tk.Label, intvar:tk.IntVar, min_val=0):
         new_val = intvar.get() - 1
         if new_val >= min_val:
-            # print(new_val, end="")
             intvar.set(new_val)
-        # print(new_val, end="\n")
         label_widget.config(text=str(intvar.get()))
 
     def create_plot_area(self, parent):
@@ -436,14 +319,6 @@ class PicPro:
         control_frame = ttk.LabelFrame(parent, text="图片显示区域", padding=5)
         control_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        btn_frame = ttk.Frame(control_frame)
-        btn_frame.pack(fill=tk.X, pady=5)
-        ttk.Button(btn_frame, text="打开图片", command=self.load_image).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="保存结果", command=self.save_result).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="执行净色", command=self.apply_clean_color).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="执行灰度", command=self.apply_grayscale).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="执行反转", command=self.apply_reverse).pack(side=tk.LEFT, padx=5)
-        ttk.Button(btn_frame, text="执行二值", command=self.apply_binarization).pack(side=tk.LEFT, padx=5)
         self.create_pic_show(control_frame)
     
     def create_pic_show(self, parent):
@@ -463,7 +338,7 @@ class PicPro:
         self.result_label = ttk.Label(result_frame, background="#ffffff", relief="sunken")
         self.result_label.pack(fill=tk.BOTH, expand=True)
     
-    def load_image(self):
+    def load_image(self, mode="RGB"):
         """加载图片文件"""
         file_path = filedialog.askopenfilename(
             title="选择图片",
@@ -474,7 +349,7 @@ class PicPro:
         
         try:
             # 打开并转为 RGB
-            self.original_image = Image.open(file_path).convert("RGB")
+            self.original_image = Image.open(file_path).convert(mode=mode)
             self.original_array = np.array(self.original_image)
             
             # 显示原图
@@ -487,7 +362,7 @@ class PicPro:
         except Exception as e:
             messagebox.showerror("错误", f"无法加载图片：{e}")
     
-    def display_image(self, img_array, label_widget, is_original=True, max_width=800, max_height=800):
+    def display_image(self, img_array, label_widget, is_original=True, max_width=600, max_height=600):
         """显示 numpy 数组图片到 Label，自动缩放并保持比例"""
         if img_array is None:
             label_widget.config(image='')
@@ -500,6 +375,8 @@ class PicPro:
         # 将 numpy 数组转为 PIL Image
         if img_array.dtype == np.uint8 and img_array.ndim == 3:
             pil_img = Image.fromarray(img_array)
+        elif img_array.dtype == np.uint8 and img_array.ndim == 2:
+            pil_img = Image.fromarray(np.stack([img_array, img_array, img_array], axis=2))
         else:
             raise ValueError("不支持的图片格式")
         
@@ -526,18 +403,20 @@ class PicPro:
         if self.original_array is None:
             messagebox.showwarning("警告", "请先打开一张图片")
             return
-        bin_bound = self.colorclean_binbonud_thresh.get()   # 灰度二值化阈值
+        if self.original_array.ndim != 3:
+            messagebox.showwarning("警告", "这不是RGB彩色图片")
+            return
+        bin_bound = self.colorclean_binbonud_var.get()   # 灰度二值化阈值
         red_start = self.colorclean_redbound_thresh.get()   # 红色通道最小值
-        red_diff = self.colorclean_reddiff_thresh.get()     # R-G和R-B差值阈值
+        red_diff = self.colorclean_reddiff_var.get()     # R-G和R-B差值阈值
         
-        result_array = self.process.document_clean(
+        self.processed_array = self.process.document_clean(
             self.original_array,
             red_r_thresh=red_start,
             red_diff_thresh=red_diff,
             gray_thresh=bin_bound
         )
         
-        self.processed_array = result_array
         self.display_image(self.processed_array, self.result_label, is_original=False)
     
     def apply_rotation(self, clockwise=True):
@@ -553,7 +432,6 @@ class PicPro:
             rotated = self.process.rotate_90(source, clockwise=False)
         self.processed_array = rotated
         self.display_image(self.processed_array, self.result_label, is_original=False)
-        # 也可以更新原图？看需求
     
     def apply_reverse(self):
         """反转颜色"""
@@ -564,14 +442,24 @@ class PicPro:
         self.processed_array = reversed_img
         self.display_image(self.processed_array, self.result_label, is_original=False)
     
+    def set_original(self):
+        if self.original_array is None:
+            messagebox.showwarning("警告", "请先打开一张图片")
+            return
+        self.processed_array = self.original_array
+        self.display_image(self.processed_array, self.result_label, is_original=False)
+    
     def apply_grayscale(self):
         """灰度化（使用当前RGB权重滑块）"""
         if self.original_array is None:
             messagebox.showwarning("警告", "请先打开一张图片")
             return
-        r_w = self.rgb2gray_red_thresh.get() / 255.0   # 滑块值是整数0-255，转为权重
-        g_w = self.rgb2gray_green_thresh.get() / 255.0
-        b_w = self.rgb2gray_blue_thresh.get() / 255.0
+        if self.original_array.ndim != 3:
+            messagebox.showwarning("警告", "这不是RGB彩色图片")
+            return
+        r_w = self.rgb2gray_red_var.get() / 255.0   # 滑块值是整数0-255，转为权重
+        g_w = self.rgb2gray_green_var.get() / 255.0
+        b_w = self.rgb2gray_blue_var.get() / 255.0
         # 归一化权重和=1
         total = r_w + g_w + b_w
         if total != 0:
@@ -579,32 +467,31 @@ class PicPro:
             g_w /= total
             b_w /= total
         self.processed_array = self.process.rgb2gray(self.original_array, weights=(r_w, g_w, b_w))
-        # 灰度图转三通道（方便显示）
-        gray_array = np.stack([self.processed_array, self.processed_array, self.processed_array], axis=2)
-        self.display_image(gray_array, self.result_label, is_original=False)
+        self.display_image(self.processed_array, self.result_label, is_original=False)
     
     def apply_binarization(self):
         if self.original_array is None:
             messagebox.showwarning("警告", "请先打开一张图片")
             return
-        gray = self.binarization_gray_thresh.get()
-        r_w = self.binarization_red_thresh.get() / 255.0   # 滑块值是整数0-255，转为权重
-        g_w = self.binarization_green_thresh.get() / 255.0
-        b_w = self.binarization_blue_thresh.get() / 255.0
+        gray = self.binarization_gray_var.get()
+        r_w = self.binarization_red_var.get() / 255.0   # 滑块值是整数0-255，转为权重
+        g_w = self.binarization_green_var.get() / 255.0
+        b_w = self.binarization_blue_var.get() / 255.0
         total = r_w + g_w + b_w
         if total != 0:
             r_w /= total
             g_w /= total
             b_w /= total
         self.processed_array = self.process.binarization(self.original_array, bound=gray, weights=(r_w, g_w, b_w))
-        bina_array = np.stack([self.processed_array, self.processed_array, self.processed_array], axis=2)
-        self.display_image(bina_array, self.result_label, is_original=False)
+        self.display_image(self.processed_array, self.result_label, is_original=False)
     
     def apply_color_matrix(self, matrix):
         if self.original_array is None:
             messagebox.showwarning("警告", "请先打开一张图片")
             return
-
+        if self.original_array.ndim != 3:
+            messagebox.showwarning("警告", "这不是RGB彩色图片")
+            return
         self.processed_array = self.process.color_matrix(self.original_array, matrix)
         self.display_image(self.processed_array, self.result_label, is_original=False)
         
