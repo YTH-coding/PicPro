@@ -1,0 +1,74 @@
+{
+    "yue_bai": {
+        "Chinese_name": "月白",
+        "HEX": "#D4E5EF",
+        "RGB": [212, 229, 239],
+        "CMYK": [11, 4, 0, 6]
+    },
+    "tian_qing": {
+        "Chinese_name": "天青",
+        "HEX": "#7FC5D9",
+        "RGB": [127, 197, 217],
+        "CMYK": [41, 0, 12, 15]
+    },
+    "yan_zhi": {
+        "Chinese_name": "胭脂",
+        "HEX": "#C43A43",
+        "RGB": [196, 58, 67],
+        "CMYK": [0, 70, 66, 23]
+    },
+    "dai_lan": {
+        "Chinese_name": "黛蓝",
+        "HEX": "#3E5F7A",
+        "RGB": [62, 95, 122],
+        "CMYK": [49, 22, 0, 52]
+    },
+    "e_huang": {
+        "Chinese_name": "鹅黄",
+        "HEX": "#F9E076",
+        "RGB": [249, 224, 118],
+        "CMYK": [0, 10, 53, 2]
+    },
+    "zhu_hong": {
+        "Chinese_name": "朱红",
+        "HEX": "#E3292E",
+        "RGB": [227, 41, 46],
+        "CMYK": [0, 82, 80, 11]
+    },
+    "mo_hui": {
+        "Chinese_name": "墨灰",
+        "HEX": "#595C60",
+        "RGB": [89, 92, 96],
+        "CMYK": [7, 4, 0, 62]
+    },
+    "ou_he": {
+        "Chinese_name": "藕荷",
+        "HEX": "#D2B8C3",
+        "RGB": [210, 184, 195],
+        "CMYK": [0, 12, 7, 18]
+    },
+    "ya_qing": {
+        "Chinese_name": "鸦青",
+        "HEX": "#3B4149",
+        "RGB": [59, 65, 73],
+        "CMYK": [19, 11, 0, 71]
+    },
+    "liu_lv": {
+        "Chinese_name": "柳绿",
+        "HEX": "#9FB96F",
+        "RGB": [159, 185, 111],
+        "CMYK": [14, 0, 40, 27]
+    },
+    "qian_cao": {
+        "Chinese_name": "茜草色",
+        "HEX": "#B63E42",
+        "RGB": [182, 62, 66],
+        "CMYK": [0, 66, 64, 29]
+    },
+    "hu_po": {
+        "Chinese_name": "琥珀",
+        "HEX": "#CA6924",
+        "RGB": [202, 105, 36],
+        "CMYK": [0, 48, 82, 21]
+    }
+}

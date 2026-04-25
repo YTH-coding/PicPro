@@ -1,0 +1,62 @@
+{
+    "pastel_pink": {
+        "Chinese_name": "蜡笔粉",
+        "HEX": "#F8C8D8",
+        "RGB": [248, 200, 216],
+        "CMYK": [0, 19, 13, 3]
+    },
+    "baby_blue": {
+        "Chinese_name": "婴儿蓝",
+        "HEX": "#A4D8F0",
+        "RGB": [164, 216, 240],
+        "CMYK": [32, 10, 0, 6]
+    },
+    "mint_green": {
+        "Chinese_name": "薄荷绿",
+        "HEX": "#C1F0C1",
+        "RGB": [193, 240, 193],
+        "CMYK": [20, 0, 20, 6]
+    },
+    "pastel_yellow": {
+        "Chinese_name": "淡黄",
+        "HEX": "#FDF5C9",
+        "RGB": [253, 245, 201],
+        "CMYK": [0, 3, 21, 1]
+    },
+    "lavender": {
+        "Chinese_name": "薰衣草紫",
+        "HEX": "#D8C8F0",
+        "RGB": [216, 200, 240],
+        "CMYK": [10, 17, 0, 6]
+    },
+    "peach": {
+        "Chinese_name": "蜜桃色",
+        "HEX": "#FDDCB5",
+        "RGB": [253, 220, 181],
+        "CMYK": [0, 13, 28, 1]
+    },
+    "light_coral": {
+        "Chinese_name": "浅珊瑚",
+        "HEX": "#F8B4B4",
+        "RGB": [248, 180, 180],
+        "CMYK": [0, 27, 27, 3]
+    },
+    "cream": {
+        "Chinese_name": "奶油白",
+        "HEX": "#FFFDD0",
+        "RGB": [255, 253, 208],
+        "CMYK": [0, 1, 18, 0]
+    },
+    "pastel_orange": {
+        "Chinese_name": "淡橙",
+        "HEX": "#FDD2A4",
+        "RGB": [253, 210, 164],
+        "CMYK": [0, 17, 35, 1]
+    },
+    "pastel_lilac": {
+        "Chinese_name": "浅紫红",
+        "HEX": "#F0C8E0",
+        "RGB": [240, 200, 224],
+        "CMYK": [0, 17, 7, 6]
+    }
+}

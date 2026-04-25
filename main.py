@@ -8,12 +8,15 @@ import json
 from sub_ui import ColorMapping, NewPic
 import math
 from config.convolution import kernels
+from typing import Literal
+import os
+import shutil
 
 class PicPro:
     def __init__(self, root:tk.Tk):
         self.root = root
         self.root.title("YTH的图像处理工具集合")
-        self.root.geometry("1000x700")
+        self.root.geometry("1200x800")
         self.root.minsize(900, 600)
 
         # 初始化图片变量
@@ -27,11 +30,23 @@ class PicPro:
 
         self.color_mapping:dict = None
 
-        with open("config\color_matrix.json", 'r', encoding='utf-8') as f:
-            self.color_matrix:dict[str, list[list[float]]] = json.load(f)
+        self.colormapping_config = {
+            "默认颜色定义":"config\color_preset.json",
+            "LULC颜色定义":"config\color_preset_landuse.json",
+            "马卡龙配色":"config\color_preset_macaron.json",
+            "中国传统色":"config\color_preset_chinese.json",
+            "日本传统色":"config\color_preset_japanese.json",
+            "莫兰迪色系":"config\color_preset_morandi.json",
+            "蜡笔色系Pastel":"config\color_preset_Pastel.json"
+        }
+
+        self.workingspace = "workingspace"
+
+        self.work_temp_file:dict[str,list[str, Literal["RGB", "L"]]] = {}
         
-        with open("config\color_preset.json", "r", encoding="utf-8") as f:
-            self.color_data = json.load(f)
+        self.color_matrix:dict[str, list[list[float]]] = self.json_load("config\color_matrix.json")
+        
+        self.color_data = self.json_load(self.colormapping_config["默认颜色定义"])
         
         self.kernels = kernels
         
@@ -42,6 +57,11 @@ class PicPro:
         self.create_widgets()
 
         self.process = ImageProcessor()
+    
+    def json_load(self, path):
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data
 
     def set_theme(self):
         """设置应用主题颜色"""
@@ -93,6 +113,8 @@ class PicPro:
         
         self.file_combo.bind("<<ComboboxSelected>>", self.on_file_operate_selected)
 
+        self.create_workstream(left_frame)
+
         control_frame = ttk.LabelFrame(left_frame, text="图像处理控制", padding=10)
         control_frame.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 10))
 
@@ -126,9 +148,7 @@ class PicPro:
 
         self.create_colormatrix(control_frame) # 颜色矩阵
 
-        ttk.Button(control_frame, text="进行伪彩色化设置", width=9,
-            command=self.gray2color
-        ).pack(fill=tk.X, pady=5)
+        self.create_gray2rgb_setting(control_frame)
 
         self.create_convolution(control_frame) # 卷积操作
     
@@ -263,6 +283,36 @@ class PicPro:
         if matrix:
             # 调用颜色矩阵处理函数
             self.apply_color_matrix(matrix)
+        
+    def create_gray2rgb_setting(self, parent):
+        frame = ttk.LabelFrame(parent, text="伪彩色处理", padding=5)
+        frame.pack(fill=tk.X, pady=(0, 10))
+
+        self.colormapping_type = tk.StringVar(value="选择颜色映射组")
+        
+        # 获取矩阵名称列表
+        colormapping_types = list(self.colormapping_config.keys())
+        
+        colormapping_combo = ttk.Combobox(
+            frame, 
+            textvariable=self.colormapping_type, 
+            values=colormapping_types, 
+            state="readonly"
+        )
+        colormapping_combo.pack(fill=tk.X, pady=5)
+        
+        # 绑定选择事件
+        colormapping_combo.bind("<<ComboboxSelected>>", self.on_colormapping_selected)
+
+        ttk.Button(frame, text="进行伪彩色化设置", width=9,
+            command=self.gray2color
+        ).pack(fill=tk.X, pady=5)
+    
+    def on_colormapping_selected(self, event=None):
+        selected = self.colormapping_type.get()
+        if selected:
+            self.color_data = self.json_load(self.colormapping_config[selected])
+            print(f"颜色映射组更换为 {selected} ")
     
     def create_convolution(self, parent):
         frame = ttk.LabelFrame(parent, text="卷积操作", padding=5)
@@ -290,7 +340,58 @@ class PicPro:
         if kernels:
             # 调用颜色矩阵处理函数
             self.apply_convolution(kernels)
+    
+    def create_workstream(self, parent):
+        frame = ttk.LabelFrame(parent, text="工作流", padding=5)
+        frame.pack(fill=tk.X, pady=(0, 10))
+
+        self.work_type = tk.StringVar(value="暂存文件")
         
+        try:
+            # 获取矩阵名称列表
+            work_types = list(self.work_temp_file.keys())
+        except AttributeError:
+            work_types = []
+        
+        self.work_combo = ttk.Combobox(
+            frame, 
+            textvariable=self.work_type, 
+            values=work_types, 
+            state="readonly"
+        )
+        self.work_combo.pack(fill=tk.X, pady=5)
+        
+        # 绑定选择事件
+        self.work_combo.bind("<<ComboboxSelected>>", self.on_temp_file_selected)
+
+        basebtn_frame = ttk.Frame(frame)
+        basebtn_frame.pack(fill=tk.X, pady=5)
+        basebtn_frame.columnconfigure(0, weight=1)
+        basebtn_frame.columnconfigure(1, weight=1)
+
+        root.bind_all("<Return>", lambda e: self.save_result(temp_file=True))
+
+        ttk.Button(basebtn_frame, text="Enter暂存", width=9,
+            command=lambda:self.save_result(temp_file=True)
+        ).grid(row=0, column=0, padx=5)
+        ttk.Button(basebtn_frame, text="清空暂存", width=9,
+            command=self.work_temp_file_clear
+        ).grid(row=0, column=1, padx=5)
+    
+    def on_temp_file_selected(self, event=None):
+        selected = self.work_type.get()
+        info = self.work_temp_file.get(selected)
+        if info:
+            self.load_image(mode=info[1], file_path=info[0])
+    
+    def work_temp_file_clear(self):
+        messagebox.showwarning("警告", "此操作清空工作目录")
+        shutil.rmtree(self.workingspace)
+        os.makedirs(self.workingspace)
+        if self.work_temp_file:
+            self.work_temp_file.clear()
+            self.work_combo['values'] = []
+    
     def gray2color(self):
         if self.original_array is None:
             messagebox.showwarning("警告", "请先打开一张图片")
@@ -370,14 +471,15 @@ class PicPro:
         self.result_label = ttk.Label(result_frame, background="#ffffff", relief="sunken")
         self.result_label.pack(fill=tk.BOTH, expand=True)
     
-    def load_image(self, mode="RGB"):
+    def load_image(self, mode="RGB", file_path=None):
         """加载图片文件"""
-        file_path = filedialog.askopenfilename(
-            title="选择图片",
-            filetypes=[("图像文件", "*.jpg *.jpeg *.png *.bmp *.tiff"), ("所有文件", "*.*")]
-        )
         if not file_path:
-            return
+            file_path = filedialog.askopenfilename(
+                title="选择图片",
+                filetypes=[("图像文件", "*.jpg *.jpeg *.png *.bmp *.tiff"), ("所有文件", "*.*")]
+            )
+            if not file_path:
+                return
         
         try:
             # 打开并转为 RGB
@@ -394,7 +496,7 @@ class PicPro:
         except Exception as e:
             messagebox.showerror("错误", f"无法加载图片：{e}")
     
-    def display_image(self, img_array, label_widget, is_original=True, max_width=800, max_height=800):
+    def display_image(self, img_array, label_widget, is_original=True, max_width=700, max_height=700):
         """显示 numpy 数组图片到 Label，自动缩放并保持比例"""
         if img_array is None:
             label_widget.config(image='')
@@ -534,24 +636,38 @@ class PicPro:
         self.processed_array = self.process.convolution_std(self.original_array, kernel)
         self.display_image(self.processed_array, self.result_label, is_original=False)
         
-    def save_result(self):
+    def save_result(self, temp_file=False):
         """保存处理后的图片"""
         if self.processed_array is None:
             messagebox.showwarning("警告", "没有处理结果可保存")
             return
-        file_path = filedialog.asksaveasfilename(
-            defaultextension=".png",
-            filetypes=[("PNG图片", "*.png"), ("JPEG图片", "*.jpg"), ("所有文件", "*.*")]
-        )
+        if temp_file:
+
+            self.original_array = self.processed_array
+            self.display_image(self.original_array, self.original_label, is_original=True)
+
+            temp_id = len(self.work_temp_file)
+            file_path = f"{self.workingspace}/temp{temp_id}.png"
+            if self.processed_array.ndim == 2:
+                self.work_temp_file[f"temp{temp_id}"] = [file_path, "L"]
+            elif self.processed_array.ndim == 3:
+                self.work_temp_file[f"temp{temp_id}"] = [file_path, "RGB"]
+            self.work_combo['values'] = list(self.work_temp_file.keys())
+            print(self.work_temp_file)
+        else:
+            file_path = filedialog.asksaveasfilename(
+                defaultextension=".png",
+                filetypes=[("PNG图片", "*.png"), ("JPEG图片", "*.jpg"), ("所有文件", "*.*")]
+            )
         if file_path:
             if self.processed_array.ndim == 2:
                 Image.fromarray(self.processed_array, mode="L").save(file_path)
-                messagebox.showinfo("成功保存为灰度图文件", f"图片已保存到：{file_path}")
             elif self.processed_array.ndim == 3:
                 Image.fromarray(self.processed_array, mode="RGB").save(file_path)
-                messagebox.showinfo("成功保存为彩色图文件", f"图片已保存到：{file_path}")
+            if temp_file:
+                pass
             else:
-                messagebox.showinfo("保存错误", f"图片为保存")
+                messagebox.showinfo(f"成功保存,图片通道为{self.processed_array.ndim}", f"图片已保存到：{file_path}")
 if __name__ == "__main__":
     import ctypes
     ctypes.windll.shcore.SetProcessDpiAwareness(2)

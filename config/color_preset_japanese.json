@@ -1,0 +1,62 @@
+{
+    "sakura_iro": {
+        "Chinese_name": "樱色",
+        "HEX": "#FEF2F4",
+        "RGB": [254, 242, 244],
+        "CMYK": [0, 5, 4, 0]
+    },
+    "fuji_iro": {
+        "Chinese_name": "藤色",
+        "HEX": "#B2A3D4",
+        "RGB": [178, 163, 212],
+        "CMYK": [16, 23, 0, 17]
+    },
+    "yamabuki_iro": {
+        "Chinese_name": "山吹色",
+        "HEX": "#F5B932",
+        "RGB": [245, 185, 50],
+        "CMYK": [0, 25, 80, 4]
+    },
+    "momiji_iro": {
+        "Chinese_name": "红叶色",
+        "HEX": "#CB4042",
+        "RGB": [203, 64, 66],
+        "CMYK": [0, 68, 67, 20]
+    },
+    "aotake_iro": {
+        "Chinese_name": "青竹色",
+        "HEX": "#7BBA9A",
+        "RGB": [123, 186, 154],
+        "CMYK": [34, 0, 17, 27]
+    },
+    "asagi_iro": {
+        "Chinese_name": "浅葱色",
+        "HEX": "#00A0B0",
+        "RGB": [0, 160, 176],
+        "CMYK": [100, 9, 31, 0]
+    },
+    "toki_iro": {
+        "Chinese_name": "朱鹭色",
+        "HEX": "#EEA5A4",
+        "RGB": [238, 165, 164],
+        "CMYK": [0, 31, 31, 7]
+    },
+    "nadeshiko_iro": {
+        "Chinese_name": "抚子色",
+        "HEX": "#FADBD8",
+        "RGB": [250, 219, 216],
+        "CMYK": [0, 12, 14, 2]
+    },
+    "kakitsubata_iro": {
+        "Chinese_name": "杜若色",
+        "HEX": "#5E5D93",
+        "RGB": [94, 93, 147],
+        "CMYK": [36, 37, 0, 42]
+    },
+    "cha_iro": {
+        "Chinese_name": "茶色",
+        "HEX": "#8B5E3C",
+        "RGB": [139, 94, 60],
+        "CMYK": [0, 32, 57, 45]
+    }
+}

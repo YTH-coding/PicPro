@@ -1,0 +1,86 @@
+{
+    "arable_land": {
+        "Chinese_name": "耕地",
+        "HEX": "#F5F5A0",
+        "RGB": [245, 245, 160],
+        "CMYK": [0, 0, 35, 4],
+        "description": "指种植农作物的土地。颜色方案采用淡黄色系，在专题地图中常用以区分其他地类。"
+    },
+    "garden_land": {
+        "Chinese_name": "园地",
+        "HEX": "#C8E6A0",
+        "RGB": [200, 230, 160],
+        "CMYK": [13, 0, 30, 10],
+        "description": "指种植以采集果、叶、根、茎、汁等为主的集约经营的多年生木本和草本作物的土地。颜色采用浅绿色，以示与耕地的区别。"
+    },
+    "forest_land": {
+        "Chinese_name": "林地",
+        "HEX": "#1E8C1E",
+        "RGB": [30, 140, 30],
+        "CMYK": [79, 0, 79, 45],
+        "description": "指生长乔木、竹类、灌木的土地。颜色方案采用深绿色系，直观反映植被覆盖特征。"
+    },
+    "grassland": {
+        "Chinese_name": "草地",
+        "HEX": "#78C878",
+        "RGB": [120, 200, 120],
+        "CMYK": [40, 0, 40, 22],
+        "description": "指生长草本植物为主的土地。颜色采用草绿色，与林地的深绿形成视觉层次。"
+    },
+    "commercial_service_land": {
+        "Chinese_name": "商服用地",
+        "HEX": "#FA6464",
+        "RGB": [250, 100, 100],
+        "CMYK": [0, 60, 60, 2],
+        "description": "指主要用于商业、服务业的土地。颜色采用鲜明的红色系，突出其建设用地的经济属性。"
+    },
+    "industrial_mining_land": {
+        "Chinese_name": "工矿仓储用地",
+        "HEX": "#C864A0",
+        "RGB": [200, 100, 160],
+        "CMYK": [0, 50, 20, 22],
+        "description": "指主要用于工业生产、采矿、物资存放场所的土地。颜色采用紫色系。"
+    },
+    "residential_land": {
+        "Chinese_name": "住宅用地",
+        "HEX": "#FFB4A0",
+        "RGB": [255, 180, 160],
+        "CMYK": [0, 29, 37, 0],
+        "description": "指主要用于人们生活居住的房基地及其附属设施的土地。颜色采用暖橙色。"
+    },
+    "public_management_service_land": {
+        "Chinese_name": "公共管理与公共服务用地",
+        "HEX": "#FF8C8C",
+        "RGB": [255, 140, 140],
+        "CMYK": [0, 45, 45, 0],
+        "description": "指用于机关团体、新闻出版、科教文卫等公共服务的土地。颜色采用浅红色。"
+    },
+    "special_land": {
+        "Chinese_name": "特殊用地",
+        "HEX": "#DC8C8C",
+        "RGB": [220, 140, 140],
+        "CMYK": [0, 36, 36, 14],
+        "description": "指用于军事设施、涉外、宗教、殡葬等特殊用途的土地。颜色采用暗红色。"
+    },
+    "transportation_land": {
+        "Chinese_name": "交通运输用地",
+        "HEX": "#A0A0A0",
+        "RGB": [160, 160, 160],
+        "CMYK": [0, 0, 0, 37],
+        "description": "指用于运输通行的地面线路、场站等土地。颜色方案采用灰色系。"
+    },
+    "water_conservancy_land": {
+        "Chinese_name": "水域及水利设施用地",
+        "HEX": "#6496FF",
+        "RGB": [100, 150, 255],
+        "CMYK": [61, 41, 0, 0],
+        "description": "指陆地水域、海涂、沟渠等用地。颜色采用蓝色系，与水体的自然属性相符。"
+    },
+    "other_land": {
+        "Chinese_name": "其他土地",
+        "HEX": "#D2D2D2",
+        "RGB": [210, 210, 210],
+        "CMYK": [0, 0, 0, 18],
+        "description": "指上述地类以外的其他类型的土地，如空闲地、设施农用地、田坎等。颜色采用浅灰色。"
+    }
+}

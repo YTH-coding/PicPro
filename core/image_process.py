@@ -590,95 +590,14 @@ def ProcessTime(func):
         return result
     return inner
 
-def RGB2Gray(
-    pic_input: Union[Path, str, np.ndarray],
-    output_address: Union[Path, str, None] = Path("output.png"),
-    weights: Tuple[float, float, float] = (0.299, 0.587, 0.114),
-    show_the_infomation: bool = True,
-    get_matrix: bool = False,
-) -> Union[np.ndarray, str]:
-    """
-    将RGB图像转换为灰度图像
-    
-    Args:
-        pic_input: 输入图像（文件路径或numpy数组）
-        weights: RGB权重系数
-        show_the_infomation: 是否显示处理信息
-        output_address: 输出文件路径
-        get_matrix: 是否返回灰度矩阵
-        
-    Returns:
-        根据参数返回矩阵或者文件路径
-    """
-    # 权重不对，立即终止程序
-    if abs(sum(weights) - 1) > 1e-5:
-        raise ValueError("权重之和需要为1")
-    
-    # 获取输入矩阵
-    if isinstance(pic_input, np.ndarray):
-        try:
-            _, _, number = pic_input.shape
-            if number != 3:
-                raise ValueError("输入不是彩图矩阵，请检查")
-        except:
-            raise ValueError("输入的矩阵有问题，请检查")
-        rgb_matrix = pic_input
-        print(f"彩图矩阵开始处理")
-    elif isinstance(pic_input, str) or isinstance(pic_input, Path):
-        img = Image.open(pic_input)
-        rgb_img = img.convert("RGB")
-
-        rgb_matrix = np.array(rgb_img)
-
-        print(f"图片{pic_input}开始处理")
-    
-    # 开始进行图像处理
-    processor = ImageProcessor()
-    if show_the_infomation:
-        @ProcessTime
-        def process(rgb):
-            return processor.rgb2gray(rgb, weights)
-    else:
-        def process(rgb):
-            return processor.rgb2gray(rgb, weights)
-        
-    c_gray = process(rgb_matrix)
-
-    if show_the_infomation:
-        print(f"图片形状:{c_gray.shape}")
-
-    # 函数输出
-    if output_address==None: # 没有输出文件地址
-        if get_matrix:
-            return c_gray
-        else:
-            raise ValueError("没有设置返回值和输出路径，处理无效")
-    elif isinstance(output_address, Path) or isinstance(output_address, str):
-        gray_img = Image.fromarray(c_gray, mode="L") # 保存图片
-        output_format = Path(output_address).suffix[1:].upper() # 获取扩展名
-        if output_format == 'JPG':
-            output_format = 'JPEG'
-        gray_img.save(output_address, format=output_format)
-
-        if show_the_infomation:
-            print(f"图片已保存到{output_address}\n")
-
-        if get_matrix:
-            return c_gray
-        else:
-            return output_address
-    else:
-        raise ValueError("输出文件地址有误！")
-
 # 测试性能
 if __name__ == "__main__":
     # 生成一张 4000x3000 的随机 RGB 图像（约 36MB）
     height, width = 3000, 4000
     rgb_image = np.random.randint(0, 256, (height, width, 3), dtype=np.uint8)
 
-    # 1. C 实现（通过 ctypes 调用）
-    processor = ImageProcessor("image_process.dll")
+    processor = ImageProcessor()
     start = time.time()
-    c_gray = processor.rgb_to_gray(rgb_image)
+    c_gray = processor.rgb2gray(rgb_image)
     c_time = time.time() - start
     print(f"C 实现耗时：{c_time:.4f} 秒")

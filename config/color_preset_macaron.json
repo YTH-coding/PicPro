@@ -1,0 +1,74 @@
+{
+    "macaron_pink": {
+        "Chinese_name": "马卡龙粉",
+        "HEX": "#F8B0C2",
+        "RGB": [248, 176, 194],
+        "CMYK": [0, 29, 22, 3]
+    },
+    "macaron_mint": {
+        "Chinese_name": "马卡龙薄荷绿",
+        "HEX": "#B5EAD7",
+        "RGB": [181, 234, 215],
+        "CMYK": [23, 0, 8, 8]
+    },
+    "macaron_lavender": {
+        "Chinese_name": "马卡龙薰衣草紫",
+        "HEX": "#C7CEEA",
+        "RGB": [199, 206, 234],
+        "CMYK": [15, 12, 0, 8]
+    },
+    "macaron_sky_blue": {
+        "Chinese_name": "马卡龙天空蓝",
+        "HEX": "#B5D8EB",
+        "RGB": [181, 216, 235],
+        "CMYK": [23, 8, 0, 8]
+    },
+    "macaron_peach": {
+        "Chinese_name": "马卡龙蜜桃色",
+        "HEX": "#FFDAB9",
+        "RGB": [255, 218, 185],
+        "CMYK": [0, 15, 27, 0]
+    },
+    "macaron_lemon": {
+        "Chinese_name": "马卡龙柠檬黄",
+        "HEX": "#FFF1B0",
+        "RGB": [255, 241, 176],
+        "CMYK": [0, 5, 31, 0]
+    },
+    "macaron_grey": {
+        "Chinese_name": "马卡龙灰",
+        "HEX": "#D3D3D3",
+        "RGB": [211, 211, 211],
+        "CMYK": [0, 0, 0, 17]
+    },
+    "macaron_coral": {
+        "Chinese_name": "马卡龙珊瑚色",
+        "HEX": "#FFB7B2",
+        "RGB": [255, 183, 178],
+        "CMYK": [0, 28, 30, 0]
+    },
+    "macaron_matcha": {
+        "Chinese_name": "马卡龙抹茶绿",
+        "HEX": "#C1D5A4",
+        "RGB": [193, 213, 164],
+        "CMYK": [9, 0, 23, 16]
+    },
+    "macaron_violet": {
+        "Chinese_name": "马卡龙紫罗兰",
+        "HEX": "#D5B9D3",
+        "RGB": [213, 185, 211],
+        "CMYK": [0, 13, 1, 16]
+    },
+    "macaron_cream": {
+        "Chinese_name": "马卡龙奶油色",
+        "HEX": "#FFFDD0",
+        "RGB": [255, 253, 208],
+        "CMYK": [0, 1, 18, 0]
+    },
+    "macaron_rose": {
+        "Chinese_name": "马卡龙玫瑰粉",
+        "HEX": "#F4C2C2",
+        "RGB": [244, 194, 194],
+        "CMYK": [0, 20, 20, 4]
+    }
+}

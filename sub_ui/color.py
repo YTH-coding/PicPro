@@ -9,6 +9,7 @@ class ColorMapping():
     def __init__(self, parent:tk.Tk, color_data, unique_vals:list[int]=None):
         self.parent = parent
         self.color_data = color_data
+        self.color_list = [v["HEX"] for _, v in self.color_data.items()]
         self.dialog = tk.Toplevel(parent)
         self._updating = False  # guard against recursive trace calls
 
@@ -54,25 +55,76 @@ class ColorMapping():
         left_frame = tk.Frame(main_frame)
         left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        self.listbox = tk.Listbox(
-            left_frame,
-            bg="#FFFFFF",
-            fg="black",
-            font=("Microsoft YaHei", 13),
-            relief=tk.SOLID,
-            borderwidth=1,
-            activestyle=tk.NONE,
-            selectbackground="#FFFFFF",
-            selectforeground="#aaaaaa",
-        )
-        self.listbox.pack(fill=tk.BOTH, expand=True)
+        left_canvas = tk.Canvas(left_frame, width=300, bg='#ffffff')
+        scrollbar = tk.Scrollbar(left_frame, orient="vertical", command=left_canvas.yview)
+        scroll_frame = tk.Frame(left_canvas, bg='#ffffff')
 
-        scrollbar = tk.Scrollbar(self.listbox, orient=tk.VERTICAL, command=self.listbox.yview)
-        self.listbox.configure(yscrollcommand=scrollbar.set)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        scroll_frame.bind("<Configure>", lambda e: left_canvas.configure(scrollregion=left_canvas.bbox("all")))
+        left_canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
+        left_canvas.configure(yscrollcommand=scrollbar.set)
 
-        self.add_initial_colors()
-        self.listbox.bind("<<ListboxSelect>>", self.update_color_info)
+        left_canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+        self.selected_info = None  # 用于高亮管理
+
+        for key, value in self.color_data.items():
+            item_frame = tk.Frame(scroll_frame, bg='#ffffff')
+            item_frame.pack(fill="x", padx=2, pady=2)
+
+            # 色块预览
+            preview = tk.Label(item_frame, width=3, height=1,
+                            relief=tk.FLAT, borderwidth=0,
+                            bg=value["HEX"])
+            preview.pack(side="left", padx=(2, 6))
+
+            # 文字
+            text = f'{value["Chinese_name"]}-{key}'
+            text_label = tk.Label(item_frame, text=text, anchor="w",
+                                bg='#ffffff', font=("Microsoft YaHei", 13))
+            text_label.pack(side="left", fill="x", expand=True)
+
+            # 鼠标悬停效果
+            def on_enter(event, frame=item_frame, p=preview, t=text_label, v=value):
+                if self.selected_info is None or frame != self.selected_info["frame"]:
+                    frame.config(bg='#e0e0e0')
+                    p.config(bg=v["HEX"])
+                    t.config(bg='#e0e0e0')
+
+            def on_leave(event, frame=item_frame, p=preview, t=text_label, v=value):
+                if self.selected_info is None or frame != self.selected_info["frame"]:
+                    frame.config(bg='#ffffff')
+                    p.config(bg=v["HEX"])
+                    t.config(bg='#ffffff')
+
+            # 点击事件
+            def on_click(event, k=key, v=value, frame=item_frame, p=preview, t=text_label):
+                # ---- 恢复旧选中项 ----
+                old_info = self.selected_info
+                if old_info and old_info["frame"] != frame:
+                    old_f = old_info["frame"]
+                    old_f.config(bg='#ffffff')
+                    # 文字恢复白色背景
+                    old_f.winfo_children()[-1].config(bg='#ffffff')   # 如果文字是最后一个子控件
+                    # 或者遍历，只对非色块的 Label 恢复（可根据类型区分）
+                    for child in old_f.winfo_children():
+                        if child != p:  # 但 p 是当前新选中的，不能简单判断，稳妥做法是记住旧色块引用
+                            child.config(bg='#ffffff')
+                    # 旧色块恢复原本颜色
+                    old_info["preview"].config(bg=old_info["value"]["HEX"])
+
+                # ---- 设置当前选中 ----
+                frame.config(bg='#d0e7f9')
+                p.config(bg=v["HEX"])
+                t.config(bg='#d0e7f9')
+                self.selected_info = {"frame": frame, "key": k, "value": v, "preview": p}
+                self.select_color(k, v)
+
+            # 绑定事件到整行及子控件
+            for widget in (item_frame, preview, text_label):
+                widget.bind("<Enter>", on_enter)
+                widget.bind("<Leave>", on_leave)
+                widget.bind("<Button-1>", on_click)
 
         # ========== Right: Color Display & Inputs ==========
         right_frame = tk.Frame(main_frame)
@@ -124,12 +176,18 @@ class ColorMapping():
 
         btn_frame = tk.Frame(right_frame)
         btn_frame.pack(fill=tk.X, pady=5)
-        ttk.Button(btn_frame, text="保存映射关系", width=15,
+        ttk.Button(btn_frame, text="保存映射", width=10,
             command=self.get_data
         ).grid(row=0, column=0, padx=5)
-        ttk.Button(btn_frame, text="随机生成映射", width=15,
-            command=self.random_mapping
+        ttk.Button(btn_frame, text="随机颜色", width=10,
+            command=self.random_color
         ).grid(row=0, column=1, padx=5)
+        ttk.Button(btn_frame, text="随机映射", width=10,
+            command=self.random_mapping
+        ).grid(row=0, column=2, padx=5)
+        ttk.Button(btn_frame, text="白色255", width=10,
+            command=self.white255
+        ).grid(row=0, column=3, padx=5)
 
         canvas = tk.Canvas(right_frame, highlightthickness=0, height=200)
         scrollbar = ttk.Scrollbar(right_frame, orient=tk.VERTICAL, command=canvas.yview)
@@ -156,7 +214,7 @@ class ColorMapping():
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y, pady=(5,0))
 
         # 表头
-        ttk.Label(self.inner, text="#").grid(row=0, column=0, padx=5)
+        ttk.Label(self.inner, text=" # ").grid(row=0, column=0, padx=5)
         ttk.Label(self.inner, text="数字").grid(row=0, column=1, padx=5)
         ttk.Label(self.inner, text="色彩").grid(row=0, column=2, padx=5)
         ttk.Label(self.inner, text="预览").grid(row=0, column=3, padx=5)
@@ -165,13 +223,28 @@ class ColorMapping():
         for number in self.unique_vals:
             self.add_row(number)
 
+    def select_color(self, key, color_data):
+        """根据选中颜色更新右侧预览、滑块和HEX输入"""
+        self._updating = True
+        self.red_val.set(color_data["RGB"][0])
+        self.green_val.set(color_data["RGB"][1])
+        self.blue_val.set(color_data["RGB"][2])
+        self.red_label.config(text=str(color_data["RGB"][0]))
+        self.green_label.config(text=str(color_data["RGB"][1]))
+        self.blue_label.config(text=str(color_data["RGB"][2]))
+        self.entry_hex_var.set(color_data["HEX"])
+        self.color_label.configure(bg=color_data["HEX"],
+                                fg=f'#{255-color_data["RGB"][0]:02x}'
+                                    f'{255-color_data["RGB"][1]:02x}'
+                                    f'{255-color_data["RGB"][2]:02x}')
+        self._updating = False
     # -------- Event Handlers --------
 
     def add_row(self, number):
         row = len(self.entries) + 1
         idx = row  # grid 行号（表头占 0）
 
-        lbl = ttk.Label(self.inner, text=str(row), width=1)
+        lbl = ttk.Label(self.inner, text=str(row), width=3)
         lbl.grid(row=idx, column=0, padx=5, pady=2)
 
         entry_num = ttk.Entry(self.inner, width=20)
@@ -182,7 +255,7 @@ class ColorMapping():
         entry_color.grid(row=idx, column=2, padx=5, pady=2)
 
         # 颜色预览小方块
-        preview = tk.Label(self.inner, width=3, height=1, relief=tk.SOLID, borderwidth=1)
+        preview = tk.Label(self.inner, width=3, height=1, relief=tk.FLAT, borderwidth=0)
         preview.grid(row=idx, column=3, padx=(0, 5), pady=2)
         entry_color.bind("<KeyRelease>", lambda e: self._update_preview(preview, entry_color))
 
@@ -205,12 +278,24 @@ class ColorMapping():
         self.color_mapping = {int(e["number"].get()):str(e["color"].get()) for e in self.entries}
         print("颜色映射已保存")
     
-    def random_mapping(self):
+    def random_color(self):
         for item in self.entries:
             random_color = f"#{random.randint(0, 0xFFFFFF):06x}"
             item["color"].delete(0, tk.END)
             item["color"].insert(0, random_color)
             self._update_preview(item["preview"], item["color"])
+    
+    def random_mapping(self):
+        for item in self.entries:
+            random_color = random.choice(self.color_list)
+            item["color"].delete(0, tk.END)
+            item["color"].insert(0, random_color)
+            self._update_preview(item["preview"], item["color"])
+    
+    def white255(self):
+        self.entries[-1]["color"].delete(0, tk.END)
+        self.entries[-1]["color"].insert(0, "#FFFFFF")
+        self._update_preview(self.entries[-1]["preview"], self.entries[-1]["color"])
 
     def _add_slider(self, parent, row, label_text, start=128, from_=0, to=255)->tuple[tk.IntVar, tk.Label]:
         ttk.Label(parent, text=label_text).grid(row=row, column=0, sticky=tk.W, pady=2)

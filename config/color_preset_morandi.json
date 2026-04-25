@@ -1,0 +1,50 @@
+{
+    "morandi_smoke_pink": {
+        "Chinese_name": "莫兰迪烟粉色",
+        "HEX": "#D4AEAD",
+        "RGB": [212, 174, 173],
+        "CMYK": [0, 18, 18, 17]
+    },
+    "morandi_dusty_blue": {
+        "Chinese_name": "莫兰迪雾霾蓝",
+        "HEX": "#8A9AAD",
+        "RGB": [138, 154, 173],
+        "CMYK": [20, 11, 0, 32]
+    },
+    "morandi_sage_green": {
+        "Chinese_name": "莫兰迪鼠尾草绿",
+        "HEX": "#B7B8A2",
+        "RGB": [183, 184, 162],
+        "CMYK": [1, 0, 12, 28]
+    },
+    "morandi_dusty_lavender": {
+        "Chinese_name": "莫兰迪灰紫色",
+        "HEX": "#C4B7C3",
+        "RGB": [196, 183, 195],
+        "CMYK": [0, 7, 1, 23]
+    },
+    "morandi_oatmeal": {
+        "Chinese_name": "莫兰迪燕麦色",
+        "HEX": "#D3CBB5",
+        "RGB": [211, 203, 181],
+        "CMYK": [0, 4, 14, 17]
+    },
+    "morandi_muted_yellow": {
+        "Chinese_name": "莫兰迪灰黄色",
+        "HEX": "#D6CCA1",
+        "RGB": [214, 204, 161],
+        "CMYK": [0, 5, 25, 16]
+    },
+    "morandi_terracotta": {
+        "Chinese_name": "莫兰迪陶土色",
+        "HEX": "#C2A797",
+        "RGB": [194, 167, 151],
+        "CMYK": [0, 14, 22, 24]
+    },
+    "morandi_dusty_rose": {
+        "Chinese_name": "莫兰迪干枯玫瑰色",
+        "HEX": "#C3A9A5",
+        "RGB": [195, 169, 165],
+        "CMYK": [0, 13, 15, 24]
+    }
+}

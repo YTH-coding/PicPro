@@ -1,33 +1,254 @@
 {
-"Bordeaux":{"Chinese_name":"波尔多红","HEX":"#8C1515","RGB":[140,21,21],"CMYK":[47,100,100,20]},
-"Vandyke Brown":{"Chinese_name":"凡戴克棕","HEX":"#4C2B18","RGB":[76,43,24],"CMYK":[63,80,95,50]},
-"Klein Blue":{"Chinese_name":"克莱因蓝","HEX":"#002FA7","RGB":[0,47,167],"CMYK":[100,88,0,0]},
-"Sennelier Yellow":{"Chinese_name":"申布伦黄","HEX":"#F9DC24","RGB":[249,220,36],"CMYK":[9,15,85,0]},
-"Tiffany Blue":{"Chinese_name":"蒂芙尼蓝","HEX":"#00A0B0","RGB":[0,160,176],"CMYK":[77,22,33,0]},
-"Burgundy Red":{"Chinese_name":"勃艮第红","HEX":"#990033","RGB":[152,0,51],"CMYK":[45,100,79,12]},
-"Chinese Red":{"Chinese_name":"中国红","HEX":"#FF0000","RGB":[255,0,0],"CMYK":[0,96,95,0]},
-"Mars Green":{"Chinese_name":"马尔斯绿","HEX":"#2E8B57","RGB":[46,139,87],"CMYK":[80,33,81,0]},
-"Prussian Blue":{"Chinese_name":"普鲁士蓝","HEX":"#0F3053","RGB":[15,48,83],"CMYK":[99,89,52,23]},
-"Titian Red":{"Chinese_name":"提香红","HEX":"#FF6347","RGB":[255,99,71],"CMYK":[0,75,67,0]},
-"Very Peri":{"Chinese_name":"长春花蓝","HEX":"#6667AB","RGB":[102,103,171],"CMYK":[70,63,9,0]},
-"Hermes Orange":{"Chinese_name":"爱马仕橙","HEX":"#EB5C20","RGB":[235,92,32],"CMYK":[0,77,90,0]},
-"Mummy Brown":{"Chinese_name":"木乃伊棕","HEX":"#8F4B28","RGB":[143,75,40],"CMYK":[48,78,95,14]},
-"Purree":{"Chinese_name":"印度黄","HEX":"#E3A857","RGB":[227,168,87],"CMYK":[15,41,69,0]},
-"Murexide":{"Chinese_name":"骨螺紫","HEX":"#794293","RGB":[121,66,147],"CMYK":[65,84,11,0]},
-"Carmine":{"Chinese_name":"胭脂虫红","HEX":"#BB2649","RGB":[187,38,73],"CMYK":[34,97,64,1]},
-"Scheler Green":{"Chinese_name":"舍勒绿","HEX":"#3C7A18","RGB":[60,122,24],"CMYK":[48,78,95,14]},
-"Paris Green":{"Chinese_name":"巴黎绿","HEX":"#50C878","RGB":[80,200,120],"CMYK":[65,0,68,0]},
-"Chrome Yellow":{"Chinese_name":"铬黄","HEX":"#EDAF0B","RGB":[237,175,11],"CMYK":[11,38,92,0]},
-"White Lead":{"Chinese_name":"铅白","HEX":"#F0F0F4","RGB":[240,240,244],"CMYK":[7,6,3,0]},
-"Ultra Marine":{"Chinese_name":"群青","HEX":"#005AD6","RGB":[0,90,214],"CMYK":[88,64,0,0]},
-"blue1":{"Chinese_name":"月白","HEX":"#D4E5EF","RGB":[212, 229, 239],"CMYK":[0,0,0,0]},
-"blue2":{"Chinese_name":"碧落","HEX":"#BCD4E7","RGB":[188, 212, 231],"CMYK":[0,0,0,0]},
-"blue3":{"Chinese_name":"窃蓝","HEX":"#88ABDA","RGB":[136, 171, 218],"CMYK":[0,0,0,0]},
-"color1":{"Chinese_name":"铜青","HEX":"#3D8E86","RGB":[61, 142, 134],"CMYK":[0,0,0,0]},
-"color2":{"Chinese_name":"空青","HEX":"#66889E","RGB":[102, 136, 158],"CMYK":[0,0,0,0]},
-"color3":{"Chinese_name":"法翠","HEX":"#108B96","RGB":[16, 139, 150],"CMYK":[0,0,0,0]},
-"color4":{"Chinese_name":"庭芜绿","HEX":"#68945C","RGB":[104, 148, 92],"CMYK":[0,0,0,0]},
-"color5":{"Chinese_name":"官绿","HEX":"#2A6E3F","RGB":[42, 110, 63],"CMYK":[0,0,0,0]},
-"color6":{"Chinese_name":"瓷秘","HEX":"#BFC096","RGB":[191, 192, 150],"CMYK":[0,0,0,0]},
-"color7":{"Chinese_name":"青玉案","HEX":"#A8B092","RGB":[168, 176, 146],"CMYK":[0,0,0,0]}
+    "Bordeaux":{
+        "Chinese_name":"波尔多红",
+        "HEX":"#8C1515",
+        "RGB":[140,21,21],
+        "CMYK":[47,100,100,20]
+    },
+    "Vandyke Brown":{
+        "Chinese_name":"凡戴克棕",
+        "HEX":"#4C2B18",
+        "RGB":[76,43,24],
+        "CMYK":[63,80,95,50]
+    },
+    "Klein Blue":{
+        "Chinese_name":"克莱因蓝",
+        "HEX":"#002FA7",
+        "RGB":[0,47,167],
+        "CMYK":[100,88,0,0]
+    },
+    "Sennelier Yellow":{
+        "Chinese_name":"申布伦黄",
+        "HEX":"#F9DC24",
+        "RGB":[249,220,36],
+        "CMYK":[9,15,85,0]
+    },
+    "Tiffany Blue":{
+        "Chinese_name":"蒂芙尼蓝",
+        "HEX":"#00A0B0",
+        "RGB":[0,160,176],
+        "CMYK":[77,22,33,0]
+    },
+    "Burgundy Red":{
+        "Chinese_name":"勃艮第红",
+        "HEX":"#990033",
+        "RGB":[152,0,51],
+        "CMYK":[45,100,79,12]
+    },
+    "Chinese Red":{
+        "Chinese_name":"中国红",
+        "HEX":"#FF0000",
+        "RGB":[255,0,0],
+        "CMYK":[0,96,95,0]
+    },
+    "Mars Green":{
+        "Chinese_name":"马尔斯绿",
+        "HEX":"#2E8B57",
+        "RGB":[46,139,87],
+        "CMYK":[80,33,81,0]
+    },
+    "Prussian Blue":{
+        "Chinese_name":"普鲁士蓝",
+        "HEX":"#0F3053",
+        "RGB":[15,48,83],
+        "CMYK":[99,89,52,23]
+    },
+    "Titian Red":{
+        "Chinese_name":"提香红",
+        "HEX":"#FF6347",
+        "RGB":[255,99,71],
+        "CMYK":[0,75,67,0]
+    },
+    "Very Peri":{
+        "Chinese_name":"长春花蓝",
+        "HEX":"#6667AB",
+        "RGB":[102,103,171],
+        "CMYK":[70,63,9,0]
+    },
+    "Hermes Orange":{
+        "Chinese_name":"爱马仕橙",
+        "HEX":"#EB5C20",
+        "RGB":[235,92,32],
+        "CMYK":[0,77,90,0]
+    },
+    "Mummy Brown":{
+        "Chinese_name":"木乃伊棕",
+        "HEX":"#8F4B28",
+        "RGB":[143,75,40],
+        "CMYK":[48,78,95,14]
+    },
+    "Purree":{
+        "Chinese_name":"印度黄",
+        "HEX":"#E3A857",
+        "RGB":[227,168,87],
+        "CMYK":[15,41,69,0]
+    },
+    "Murexide":{
+        "Chinese_name":"骨螺紫",
+        "HEX":"#794293",
+        "RGB":[121,66,147],
+        "CMYK":[65,84,11,0]
+    },
+    "Carmine":{
+        "Chinese_name":"胭脂虫红",
+        "HEX":"#BB2649",
+        "RGB":[187,38,73],
+        "CMYK":[34,97,64,1]
+    },
+    "Scheler Green":{
+        "Chinese_name":"舍勒绿",
+        "HEX":"#3C7A18",
+        "RGB":[60,122,24],
+        "CMYK":[48,78,95,14]
+    },
+    "Paris Green":{
+        "Chinese_name":"巴黎绿",
+        "HEX":"#50C878",
+        "RGB":[80,200,120],
+        "CMYK":[65,0,68,0]
+    },
+    "Chrome Yellow":{
+        "Chinese_name":"铬黄",
+        "HEX":"#EDAF0B",
+        "RGB":[237,175,11],
+        "CMYK":[11,38,92,0]
+    },
+    "White Lead":{
+        "Chinese_name":"铅白",
+        "HEX":"#F0F0F4",
+        "RGB":[240,240,244],
+        "CMYK":[7,6,3,0]
+    },
+    "Ultra Marine":{
+        "Chinese_name":"群青",
+        "HEX":"#005AD6",
+        "RGB":[0,90,214],
+        "CMYK":[88,64,0,0]
+    },
+    "Yue bai":{
+        "Chinese_name":"月白",
+        "HEX":"#D4E5EF",
+        "RGB":[212, 229, 239],
+        "CMYK":[0,0,0,0]
+    },
+    "color1":{
+        "Chinese_name":"铜青",
+        "HEX":"#3D8E86",
+        "RGB":[61, 142, 134],
+        "CMYK":[0,0,0,0]
+    },
+    "color2":{
+        "Chinese_name":"空青",
+        "HEX":"#66889E",
+        "RGB":[102, 136, 158],
+        "CMYK":[0,0,0,0]
+    },
+    "Cadmium Red": {
+        "Chinese_name": "镉红",
+        "HEX": "#E30022",
+        "RGB": [227, 0, 34],
+        "CMYK": [0, 100, 85, 11]
+    },
+    "Cobalt Blue": {
+        "Chinese_name": "钴蓝",
+        "HEX": "#0047AB",
+        "RGB": [0, 71, 171],
+        "CMYK": [100, 58, 0, 33]
+    },
+    "Cerulean Blue": {
+        "Chinese_name": "蔚蓝",
+        "HEX": "#007BA7",
+        "RGB": [0, 123, 167],
+        "CMYK": [100, 26, 0, 35]
+    },
+    "Viridian": {
+        "Chinese_name": "翠绿",
+        "HEX": "#40826D",
+        "RGB": [64, 130, 109],
+        "CMYK": [51, 0, 16, 49]
+    },
+    "Ivory Black": {
+        "Chinese_name": "象牙黑",
+        "HEX": "#231F20",
+        "RGB": [35, 31, 32],
+        "CMYK": [0, 11, 9, 86]
+    },
+    "Titanium White": {
+        "Chinese_name": "钛白",
+        "HEX": "#FFFFFF",
+        "RGB": [255, 255, 255],
+        "CMYK": [0, 0, 0, 0]
+    },
+    "Naples Yellow": {
+        "Chinese_name": "那不勒斯黄",
+        "HEX": "#FADA5E",
+        "RGB": [250, 218, 94],
+        "CMYK": [0, 13, 62, 2]
+    },
+    "Vermilion": {
+        "Chinese_name": "朱砂红",
+        "HEX": "#E34234",
+        "RGB": [227, 66, 52],
+        "CMYK": [0, 71, 77, 11]
+    },
+    "Cadmium Orange": {
+        "Chinese_name": "镉橙",
+        "HEX": "#ED872D",
+        "RGB": [237, 135, 45],
+        "CMYK": [0, 43, 81, 7]
+    },
+    "Raw Umber": {
+        "Chinese_name": "生赭",
+        "HEX": "#826644",
+        "RGB": [130, 102, 68],
+        "CMYK": [0, 22, 48, 49]
+    },
+    "Burnt Sienna": {
+        "Chinese_name": "熟赭",
+        "HEX": "#E97451",
+        "RGB": [233, 116, 81],
+        "CMYK": [0, 50, 65, 9]
+    },
+    "Process Magenta": {
+        "Chinese_name": "洋红",
+        "HEX": "#EC008C",
+        "RGB": [236, 0, 140],
+        "CMYK": [0, 100, 0, 0]
+    },
+    "Process Cyan": {
+        "Chinese_name": "青色",
+        "HEX": "#00FFFF",
+        "RGB": [0, 255, 255],
+        "CMYK": [100, 0, 0, 0]
+    },
+    "Process Yellow": {
+        "Chinese_name": "黄色",
+        "HEX": "#FFFF00",
+        "RGB": [255, 255, 0],
+        "CMYK": [0, 0, 100, 0]
+    },
+    "Process Black": {
+        "Chinese_name": "黑色",
+        "HEX": "#000000",
+        "RGB": [0, 0, 0],
+        "CMYK": [0, 0, 0, 100]
+    },
+    "Gamboge": {
+        "Chinese_name": "藤黄",
+        "HEX": "#EF9B0F",
+        "RGB": [239, 155, 15],
+        "CMYK": [0, 35, 94, 6]
+    },
+    "Indigo": {
+        "Chinese_name": "靛蓝",
+        "HEX": "#4B0082",
+        "RGB": [75, 0, 130],
+        "CMYK": [42, 100, 0, 49]
+    },
+    "Yellow Ochre": {
+        "Chinese_name": "土黄",
+        "HEX": "#C68E17",
+        "RGB": [198, 142, 23],
+        "CMYK": [0, 28, 88, 22]
+    }
 }
