@@ -5,8 +5,7 @@ import numpy as np
 from PIL import Image, ImageTk
 from core.image_process import ImageProcessor
 import json
-from color import ColorMapping
-from newpic import NewPic
+from sub_ui import ColorMapping, NewPic
 import math
 from config.convolution import kernels
 

@@ -1,15 +1,19 @@
 # PicPro - Image Processing Tool
 
-A desktop image processing tool that uses Python to call C libraries for high-performance image manipulation.
+A desktop image processing tool with a graphical interface that uses Python to call C libraries for high-performance image manipulation. Core computations are handled via `ctypes` binding to a C-compiled DLL.
 
 ## Features
 
-- **Grayscale**: Convert color images to grayscale with customizable RGB weights
-- **Binarization**: Black-and-white thresholding with adjustable RGB weights
+- **Basic Operations**: Open/save images (color/grayscale), create custom images
+- **Rotation**: 90° clockwise/counterclockwise rotation
 - **Color Inversion**: Invert image colors
-- **Rotation**: 90-degree clockwise/counterclockwise rotation
+- **Grayscale**: Convert color images to grayscale with customizable RGB weights
+- **Binarization**: Black-and-white thresholding with adjustable threshold and RGB weights
+- **Pseudo-color**: Map grayscale images to custom colors with color presets
 - **Document Clean**: Process scanned/photographed documents (white background, black text, red seal) into pure white, black, and red three-color output
-- **Color Matrix**: Apply 3x3 color matrices for tone adjustment (configured in `config/color_matrix.json`)
+- **Color Matrix**: Apply 3x3 color matrices for various filter effects (vintage, cool tone, high contrast, etc.)
+- **Convolution**: Blur, sharpen, edge detection, emboss, and other convolution-based effects
+- **New Image**: Create custom-sized images with pixel values distributed by probability
 
 ## Requirements
 
@@ -31,7 +35,7 @@ pip install numpy pillow
 ### 2. Compile the C shared library
 
 ```bash
-gcc -O3 -shared -o test_c/image_process.dll test_c/image_process.c
+gcc -O3 -shared -o core/image_process.dll core/image_process.c
 ```
 
 ### 3. Run the application
@@ -44,22 +48,39 @@ python main.py
 
 ```
 PicPro/
-├── main.py                   # GUI main program (tkinter)
+├── main.py                        # GUI main program (tkinter)
+├── color.py                       # Pseudo-color mapping dialog
+├── newpic.py                      # New image creation dialog
+│
+├── core/
+│   ├── image_process.c            # C image processing core source
+│   ├── image_process.dll          # Compiled shared library
+│   └── image_process.py           # Python wrapper (ctypes bindings)
+│
 ├── config/
-│   └── color_matrix.json     # Color matrix presets
-├── test_c/
-│   ├── image_process.c       # C image processing core
-│   ├── image_process.dll     # Compiled shared library
-│   └── image_process.py      # Python wrapper (ctypes bindings)
-├── LICENSE                   # MIT License
-├── Readme.md                 # Chinese documentation
-└── Readme_EN.md              # English documentation (this file)
+│   ├── color_matrix.json          # Color matrix filter presets (16 filters)
+│   ├── color_preset.json          # Named color presets (32 colors)
+│   └── convolution.py             # Convolution kernel definitions
+│
+├── test/                          # Test scripts
+├── .vscode/                       # VS Code configuration
+├── LICENSE                        # MIT License
+└── Readme_EN.md                   # English documentation (this file)
 ```
 
 ## Architecture
 
 ```
-main.py → ImageProcessor (Python wrapper) → ctypes → image_process.dll (C compiled)
+main.py ──→ ImageProcessor (ctypes) ──→ image_process.dll (C compiled)
+    │
+    ├── color.py        ──→ Pseudo-color mapping
+    ├── newpic.py       ──→ New image creation
+    ├── config/
+    │   ├── color_matrix.json  ──→ Filter parameters
+    │   ├── color_preset.json  ──→ Color presets
+    │   └── convolution.py     ──→ Convolution kernels
+    └── core/
+        └── image_process.py  ──→ C function wrapper
 ```
 
 Python calls the C-compiled DLL via `ctypes`, leveraging C's high performance for processing large image data.
