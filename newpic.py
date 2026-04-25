@@ -97,7 +97,7 @@ class NewPic():
         ttk.Button(frame, text="+ 新增行", command=self.add_row).grid(row=4, column=0, columnspan=5, sticky=tk.EW, padx=5, pady=5)
 
         # 滚动区域
-        canvas = tk.Canvas(frame, highlightthickness=0, height=200)
+        canvas = tk.Canvas(frame, highlightthickness=0, height=200, width=300)
         scrollbar = ttk.Scrollbar(frame, orient=tk.VERTICAL, command=canvas.yview)
         self.inner = ttk.Frame(canvas)
 
@@ -106,7 +106,19 @@ class NewPic():
         canvas.create_window((0, 0), window=self.inner, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
 
-        canvas.grid(row=5, column=0, columnspan=4, sticky=tk.NSEW, pady=(5,0))
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        def _bind_mw(_=None):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        def _unbind_mw(_=None):
+            canvas.unbind_all("<MouseWheel>")
+
+        canvas.bind("<Enter>", _bind_mw)
+        canvas.bind("<Leave>", _unbind_mw)
+        self.inner.bind("<Enter>", _bind_mw)
+        self.inner.bind("<Leave>", _unbind_mw)
+
+        canvas.grid(row=5, column=0, columnspan=5, sticky=tk.NSEW, pady=(5,0))
         scrollbar.grid(row=5, column=4, sticky=tk.NS, pady=(5,0))
 
         # 表头
@@ -123,18 +135,18 @@ class NewPic():
         row = len(self.entries) + 1
         idx = row  # grid 行号（表头占 0）
 
-        lbl = ttk.Label(self.inner, text=str(row), width=4)
+        lbl = ttk.Label(self.inner, text=str(row), width=1)
         lbl.grid(row=idx, column=0, padx=5, pady=2)
 
-        number = ttk.Entry(self.inner, width=15)
+        number = ttk.Entry(self.inner, width=10)
         number.grid(row=idx, column=1, padx=5, pady=2)
         number.insert(0, f"{row}")
 
-        p = ttk.Entry(self.inner, width=15)
+        p = ttk.Entry(self.inner, width=10)
         p.grid(row=idx, column=2, padx=5, pady=2)
         # p.insert(0, f"{row}")
 
-        del_btn = ttk.Button(self.inner, text="✕", width=3,
+        del_btn = ttk.Button(self.inner, text="✕", width=2,
                              command=lambda r=idx: self._del_row(r))
         del_btn.grid(row=idx, column=3, padx=5)
 
@@ -151,14 +163,11 @@ class NewPic():
                 for w in item["widgets"]:
                     w.destroy()
                 self.entries.remove(item)
-
-    def get_data(self):
-        return {int(e["number"].get())%255:int(e["p"].get()) for e in self.entries}
     
     def generate(self):
         width = self.width_var.get()
         height = self.height_var.get()
-        result_old = self.get_data()
+        result_old =  {int(e["number"].get())%255:int(e["p"].get()) for e in self.entries}
 
         choice = self.get_choice()
         if choice == "百分比":
@@ -181,7 +190,7 @@ class NewPic():
         the_times = int(math.floor(min(600/width, 600/height)))
         img_array = np.kron(self.original_array, np.ones((the_times, the_times),dtype=int)).astype(np.uint8)
 
-        self.display_image(img_array, self.original_label, is_original=True)
+        self.display_image(img_array, self.original_label)
 
     def get_choice(self, event=None):
         return self.operate.get()
@@ -209,6 +218,18 @@ class NewPic():
 
         return var, label
 
+    def increment_value(self, label_widget:tk.Label, intvar:tk.IntVar, max_val=255):
+        new_val = intvar.get() + 1
+        if new_val <= max_val:
+            intvar.set(new_val)
+        label_widget.config(text=str(intvar.get()))
+
+    def reduce_value(self, label_widget:tk.Label, intvar:tk.IntVar, min_val=0):
+        new_val = intvar.get() - 1
+        if new_val >= min_val:
+            intvar.set(new_val)
+        label_widget.config(text=str(intvar.get()))
+
     def create_plot_area(self, parent):
         original_frame = ttk.LabelFrame(parent, text="原图", padding=5)
         original_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5)
@@ -216,19 +237,16 @@ class NewPic():
         self.original_label = ttk.Label(original_frame, background="#ffffff", relief="sunken")
         self.original_label.pack(fill=tk.BOTH, expand=True)
     
-    def display_image(self, img_array, label_widget, is_original=True, max_width=600, max_height=450):
+    def display_image(self, img_array:np.ndarray, label_widget:ttk.Label):
         """显示 numpy 数组图片到 Label，自动缩放并保持比例"""
         if img_array is None:
             label_widget.config(image='')
-            if is_original:
-                self.original_photo = None
+            self.original_photo = None
             return
         
         # 将 numpy 数组转为 PIL Image
-        if img_array.dtype == np.uint8 and img_array.ndim == 2:
-            pil_img = Image.fromarray(np.stack([img_array, img_array, img_array], axis=2))
-        else:
-            raise ValueError("不支持的图片格式")
+        # print((img_array.dtype == np.uint8), (img_array.ndim == 2))
+        pil_img = Image.fromarray(np.stack([img_array, img_array, img_array], axis=2))
 
         # 转为 tkinter 可显示的 PhotoImage
         photo = ImageTk.PhotoImage(pil_img)
@@ -236,5 +254,4 @@ class NewPic():
         # 更新 Label
         label_widget.config(image=photo)
         # 保持引用（否则会被垃圾回收）
-        if is_original:
-            self.original_photo = photo
+        self.original_photo = photo

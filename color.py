@@ -142,6 +142,18 @@ class ColorMapping():
         canvas.create_window((0, 0), window=self.inner, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
 
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        def _bind_mw(_=None):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        def _unbind_mw(_=None):
+            canvas.unbind_all("<MouseWheel>")
+
+        canvas.bind("<Enter>", _bind_mw)
+        canvas.bind("<Leave>", _unbind_mw)
+        self.inner.bind("<Enter>", _bind_mw)
+        self.inner.bind("<Leave>", _unbind_mw)
+
         canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, pady=(5,0))
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y, pady=(5,0))
 
@@ -161,7 +173,7 @@ class ColorMapping():
         row = len(self.entries) + 1
         idx = row  # grid 行号（表头占 0）
 
-        lbl = ttk.Label(self.inner, text=str(row), width=5)
+        lbl = ttk.Label(self.inner, text=str(row), width=1)
         lbl.grid(row=idx, column=0, padx=5, pady=2)
 
         entry_num = ttk.Entry(self.inner, width=20)
