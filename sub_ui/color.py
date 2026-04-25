@@ -379,28 +379,3 @@ class ColorMapping():
             self.color_label.configure(bg="#FFFFFF", fg="#000000")
         finally:
             self._updating = False
-
-    # -------- Data --------
-    def add_initial_colors(self):
-        for key, value in self.color_data.items():
-            display_text = "{}-{}".format(value["Chinese_name"], key)
-            self.listbox.insert(tk.END, display_text)
-
-    def update_color_info(self, _event):
-        selection = self.listbox.curselection()
-        if not selection:
-            return
-        whole_name = self.listbox.get(selection[0])
-        # split on '-' and take last part as the color key
-        name = re.split(r"-", whole_name)[-1]
-        color = self.color_data[name]
-        self._updating = True
-        self.red_val.set(color["RGB"][0])
-        self.green_val.set(color["RGB"][1])
-        self.blue_val.set(color["RGB"][2])
-        self.red_label.config(text=str(color["RGB"][0]))
-        self.green_label.config(text=str(color["RGB"][1]))
-        self.blue_label.config(text=str(color["RGB"][2]))
-        self.entry_hex_var.set(color["HEX"])
-        self.color_label.configure(bg=color["HEX"], fg=f'''#{255-color["RGB"][0]:02x}{255-color["RGB"][1]:02x}{255-color["RGB"][2]:02x}''')
-        self._updating = False

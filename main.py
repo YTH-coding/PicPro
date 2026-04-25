@@ -11,6 +11,7 @@ from config.convolution import kernels
 from typing import Literal
 import os
 import shutil
+import threading
 
 class PicPro:
     def __init__(self, root:tk.Tk):
@@ -27,6 +28,8 @@ class PicPro:
         # 显示用的 PhotoImage 对象（必须保持引用）
         self.original_photo = None
         self.processed_photo = None
+
+        self._processing = False  # 异步处理标志
 
         self.color_mapping:dict = None
 
@@ -151,6 +154,9 @@ class PicPro:
         self.create_gray2rgb_setting(control_frame)
 
         self.create_convolution(control_frame) # 卷积操作
+
+        # 进度条（默认隐藏，异步处理时显示）
+        self.progress_bar = ttk.Progressbar(control_frame, mode='indeterminate')
     
     def on_file_operate_selected(self, event):
         choice = self.file_combo.get()
@@ -162,7 +168,7 @@ class PicPro:
             self.load_image(mode="L")
         elif choice == "保存图片":
             self.save_result()
-        elif choice == "退出":
+        elif choice == "关闭软件":
             self.root.destroy()
         
     def new_pic(self):
@@ -265,16 +271,16 @@ class PicPro:
         # 获取矩阵名称列表
         chart_types = list(self.color_matrix.keys())
         
-        chart_combo = ttk.Combobox(
-            frame, 
-            textvariable=self.chart_type, 
-            values=chart_types, 
+        self.chart_combo = ttk.Combobox(
+            frame,
+            textvariable=self.chart_type,
+            values=chart_types,
             state="readonly"
         )
-        chart_combo.pack(fill=tk.X, pady=5)
-        
+        self.chart_combo.pack(fill=tk.X, pady=5)
+
         # 绑定选择事件
-        chart_combo.bind("<<ComboboxSelected>>", self.on_matrix_selected)
+        self.chart_combo.bind("<<ComboboxSelected>>", self.on_matrix_selected)
     
     def on_matrix_selected(self, event=None):
         """当选择颜色矩阵时调用"""
@@ -323,16 +329,16 @@ class PicPro:
         # 获取矩阵名称列表
         kernels_types = list(self.kernels.keys())
         
-        kernels_combo = ttk.Combobox(
-            frame, 
-            textvariable=self.kernels_type, 
-            values=kernels_types, 
+        self.kernels_combo = ttk.Combobox(
+            frame,
+            textvariable=self.kernels_type,
+            values=kernels_types,
             state="readonly"
         )
-        kernels_combo.pack(fill=tk.X, pady=5)
-        
+        self.kernels_combo.pack(fill=tk.X, pady=5)
+
         # 绑定选择事件
-        kernels_combo.bind("<<ComboboxSelected>>", self.on_kernels_selected)
+        self.kernels_combo.bind("<<ComboboxSelected>>", self.on_kernels_selected)
     
     def on_kernels_selected(self, event=None):
         selected = self.kernels_type.get()
@@ -369,7 +375,7 @@ class PicPro:
         basebtn_frame.columnconfigure(0, weight=1)
         basebtn_frame.columnconfigure(1, weight=1)
 
-        root.bind_all("<Return>", lambda e: self.save_result(temp_file=True))
+        self.root.bind_all("<Return>", lambda e: self.save_result(temp_file=True))
 
         ttk.Button(basebtn_frame, text="Enter暂存", width=9,
             command=lambda:self.save_result(temp_file=True)
@@ -446,6 +452,58 @@ class PicPro:
         if new_val >= min_val:
             intvar.set(new_val)
         label_widget.config(text=str(intvar.get()))
+
+    # -------- 异步处理（防界面卡顿） --------
+    def _run_async(self, worker_fn, done_callback, disable_widget=None):
+        """在后台线程执行耗时操作，完成后回到主线程更新界面
+
+        Args:
+            worker_fn: 无参函数，在后台线程执行，返回结果
+            done_callback: 接收 worker_fn 的结果，在主线程执行
+            disable_widget: 处理期间禁用的控件，完成后重新启用
+        """
+        if self._processing:
+            return
+        self._processing = True
+
+        if disable_widget:
+            disable_widget.config(state="disabled")
+
+        self.progress_bar.pack(fill=tk.X, pady=(5, 0))
+        self.progress_bar.start()
+
+        result_box = [None]
+        error_box = [None]
+
+        def target():
+            try:
+                result_box[0] = worker_fn()
+            except Exception as e:
+                error_box[0] = e
+
+        threading.Thread(target=target, daemon=True).start()
+
+        # 主线程轮询结果（不碰 tkinter 的后台线程安全）
+        self._poll_async(result_box, error_box, done_callback, disable_widget)
+
+    def _poll_async(self, result_box, error_box, done_callback, disable_widget):
+        if error_box[0] is not None:
+            self._processing = False
+            self.progress_bar.stop()
+            self.progress_bar.pack_forget()
+            if disable_widget:
+                disable_widget.config(state="readonly")
+            messagebox.showerror("处理错误", str(error_box[0]))
+            return
+        if result_box[0] is not None:
+            self._processing = False
+            self.progress_bar.stop()
+            self.progress_bar.pack_forget()
+            if disable_widget:
+                disable_widget.config(state="readonly")
+            done_callback(result_box[0])
+            return
+        self.root.after(100, lambda: self._poll_async(result_box, error_box, done_callback, disable_widget))
 
     def create_plot_area(self, parent):
         """创建图片显示区域（修改：增加固定尺寸和滚动条）"""
@@ -626,14 +684,32 @@ class PicPro:
         if self.original_array.ndim != 3:
             messagebox.showwarning("警告", "这不是RGB彩色图片")
             return
-        self.processed_array = self.process.color_matrix(self.original_array, matrix)
+
+        arr = self.original_array
+        self._run_async(
+            lambda: self.process.color_matrix(arr, matrix),
+            lambda result: self._color_matrix_done(result),
+            disable_widget=self.chart_combo
+        )
+
+    def _color_matrix_done(self, result):
+        self.processed_array = result
         self.display_image(self.processed_array, self.result_label, is_original=False)
-    
+
     def apply_convolution(self, kernel):
         if self.original_array is None:
             messagebox.showwarning("警告", "请先打开一张图片")
             return
-        self.processed_array = self.process.convolution_std(self.original_array, kernel)
+
+        arr = self.original_array
+        self._run_async(
+            lambda: self.process.convolution_std(arr, kernel),
+            lambda result: self._convolution_done(result),
+            disable_widget=self.kernels_combo
+        )
+
+    def _convolution_done(self, result):
+        self.processed_array = result
         self.display_image(self.processed_array, self.result_label, is_original=False)
         
     def save_result(self, temp_file=False):

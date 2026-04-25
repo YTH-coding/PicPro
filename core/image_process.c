@@ -53,7 +53,7 @@ int gray_set_color(const uint8_t* gray_data, int width, int height,
 }
 
 int binarization(const uint8_t* gray_data, int width, int height, uint8_t* return_gray_data, int bound) {
-    if (gray_data == NULL || gray_data == NULL || width <= 0 || height <= 0) {
+    if (gray_data == NULL || width <= 0 || height <= 0) {
         return -1; // 或返回错误码
     }
 
@@ -77,7 +77,7 @@ int binarization_reversed(const uint8_t* gray_data, int width, int height, uint8
 }
 
 int gray_reversed(const uint8_t* gray_data, int width, int height, uint8_t* return_gray_data) {
-    if (gray_data == NULL || gray_data == NULL || width <= 0 || height <= 0) {
+    if (gray_data == NULL || width <= 0 || height <= 0) {
         return -1; // 或返回错误码
     }
 
