@@ -20,8 +20,7 @@ build/
 *~
 
 # Image data (user files, not source code)
-data_source/
-data_processed/
+pic/
 
 # Scratch / test files
-test1.py
+test/

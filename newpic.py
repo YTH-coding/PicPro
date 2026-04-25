@@ -1,6 +1,4 @@
-# Copyright (c) 2025 TianhengYe
-# Released under the MIT License
-# https://opensource.org/license/mit
+# newpic.py
 
 import tkinter as tk
 from tkinter import ttk
@@ -167,7 +165,7 @@ class NewPic():
     def generate(self):
         width = self.width_var.get()
         height = self.height_var.get()
-        result_old =  {int(e["number"].get())%255:int(e["p"].get()) for e in self.entries}
+        result_old =  {int(e["number"].get())%256:int(e["p"].get()) for e in self.entries}
 
         choice = self.get_choice()
         if choice == "百分比":

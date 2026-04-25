@@ -1,12 +1,14 @@
+# main.py
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 import numpy as np
 from PIL import Image, ImageTk
-from test_c.image_process import ImageProcessor
+from core.image_process import ImageProcessor
 import json
 from color import ColorMapping
 from newpic import NewPic
 import math
+from config.convolution import kernels
 
 class PicPro:
     def __init__(self, root:tk.Tk):
@@ -31,6 +33,8 @@ class PicPro:
         
         with open("config\color_preset.json", "r", encoding="utf-8") as f:
             self.color_data = json.load(f)
+        
+        self.kernels = kernels
         
         # 设置主题颜色
         self.set_theme()
@@ -126,6 +130,8 @@ class PicPro:
         ttk.Button(control_frame, text="进行伪彩色化设置", width=9,
             command=self.gray2color
         ).pack(fill=tk.X, pady=5)
+
+        self.create_convolution(control_frame) # 卷积操作
     
     def on_file_operate_selected(self, event):
         choice = self.file_combo.get()
@@ -258,6 +264,33 @@ class PicPro:
         if matrix:
             # 调用颜色矩阵处理函数
             self.apply_color_matrix(matrix)
+    
+    def create_convolution(self, parent):
+        frame = ttk.LabelFrame(parent, text="卷积操作", padding=5)
+        frame.pack(fill=tk.X, pady=(0, 10))
+
+        self.kernels_type = tk.StringVar(value="选择卷积核")
+        
+        # 获取矩阵名称列表
+        kernels_types = list(self.kernels.keys())
+        
+        kernels_combo = ttk.Combobox(
+            frame, 
+            textvariable=self.kernels_type, 
+            values=kernels_types, 
+            state="readonly"
+        )
+        kernels_combo.pack(fill=tk.X, pady=5)
+        
+        # 绑定选择事件
+        kernels_combo.bind("<<ComboboxSelected>>", self.on_kernels_selected)
+    
+    def on_kernels_selected(self, event=None):
+        selected = self.kernels_type.get()
+        kernels = self.kernels.get(selected)
+        if kernels:
+            # 调用颜色矩阵处理函数
+            self.apply_convolution(kernels)
         
     def gray2color(self):
         if self.original_array is None:
@@ -362,7 +395,7 @@ class PicPro:
         except Exception as e:
             messagebox.showerror("错误", f"无法加载图片：{e}")
     
-    def display_image(self, img_array, label_widget, is_original=True, max_width=600, max_height=600):
+    def display_image(self, img_array, label_widget, is_original=True, max_width=800, max_height=800):
         """显示 numpy 数组图片到 Label，自动缩放并保持比例"""
         if img_array is None:
             label_widget.config(image='')
@@ -493,6 +526,13 @@ class PicPro:
             messagebox.showwarning("警告", "这不是RGB彩色图片")
             return
         self.processed_array = self.process.color_matrix(self.original_array, matrix)
+        self.display_image(self.processed_array, self.result_label, is_original=False)
+    
+    def apply_convolution(self, kernel):
+        if self.original_array is None:
+            messagebox.showwarning("警告", "请先打开一张图片")
+            return
+        self.processed_array = self.process.convolution_std(self.original_array, kernel)
         self.display_image(self.processed_array, self.result_label, is_original=False)
         
     def save_result(self):

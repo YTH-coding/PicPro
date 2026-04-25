@@ -1,6 +1,4 @@
-# Copyright (c) 2025 TianhengYe
-# Released under the MIT License
-# https://opensource.org/license/mit
+# color.py
 
 import tkinter as tk
 from tkinter import ttk

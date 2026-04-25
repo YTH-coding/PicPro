@@ -1,5 +1,5 @@
 //file_name : image_process.c
-//编译命令为 : gcc -O3 -shared -o test_c/image_process.dll test_c/image_process.c
+//编译命令为 : gcc -O3 -shared -o core/image_process.dll core/image_process.c
 
 #include <stdint.h>  // 使用uint8_t
 
@@ -238,6 +238,54 @@ int color_matrix(const uint8_t* src_rgb, int height, int width,
         dst_rgb[idx]     = (uint8_t)(new_R < 0 ? 0 : (new_R > 255 ? 255 : new_R));
         dst_rgb[idx + 1] = (uint8_t)(new_G < 0 ? 0 : (new_G > 255 ? 255 : new_G));
         dst_rgb[idx + 2] = (uint8_t)(new_B < 0 ? 0 : (new_B > 255 ? 255 : new_B));
+    }
+    return 0;
+}
+
+int convolution_gray_std(const uint8_t* src, int height, int width, uint8_t* dst, const float* kernel, int kernel_edge){
+    if (!src || !dst || height <= 0 || width <= 0 || !kernel || kernel_edge <=0) {
+        return -1;
+    }
+    if (kernel_edge % 2 == 0) return -1; 
+    for (int src_row = 0; src_row < height; src_row++) {
+        for (int src_col = 0; src_col < width; src_col++){
+            float new_gray = 0;
+            for (int kel = 0; kel < kernel_edge*kernel_edge; kel++){
+                int row = (kel / kernel_edge - (kernel_edge-1)/2)+src_row;
+                int col = (kel % kernel_edge - (kernel_edge-1)/2)+src_col;
+                row = row < 0 ? (-row) : (row >= height ? height+height-row-2 : row);
+                col = col < 0 ? (-col) : (col >= width ? width+width-col-2 : col);
+                new_gray += kernel[kel]*src[row*width + col];
+            }
+            dst[src_row*width+src_col] = (uint8_t)(new_gray < 0 ? 0 :(new_gray > 255 ? 255 : new_gray));
+        }
+    }
+    return 0;
+}
+
+int convolution_rgb_std(const uint8_t* src, int height, int width, uint8_t* dst, const float* kernel, int kernel_edge){
+    if (!src || !dst || height <= 0 || width <= 0 || !kernel || kernel_edge <=0) {
+        return -1;
+    }
+    if (kernel_edge % 2 == 0) return -1; 
+    for (int src_row = 0; src_row < height; src_row++) {
+        for (int src_col = 0; src_col < width; src_col++){
+            float new_r = 0;
+            float new_g = 0;
+            float new_b = 0;
+            for (int kel = 0; kel < kernel_edge*kernel_edge; kel++){
+                int row = (kel / kernel_edge - (kernel_edge-1)/2)+src_row;
+                int col = (kel % kernel_edge - (kernel_edge-1)/2)+src_col;
+                row = row < 0 ? (-row) : (row >= height ? height+height-row-2 : row);
+                col = col < 0 ? (-col) : (col >= width ? width+width-col-2 : col);
+                new_r += kernel[kel]*src[(row*width + col)*3];
+                new_g += kernel[kel]*src[(row*width + col)*3+1];
+                new_b += kernel[kel]*src[(row*width + col)*3+2];
+            }
+            dst[(src_row*width+src_col)*3] = (uint8_t)(new_r < 0 ? 0 :(new_r > 255 ? 255 : new_r));
+            dst[(src_row*width+src_col)*3+1] = (uint8_t)(new_g < 0 ? 0 :(new_g > 255 ? 255 : new_g));
+            dst[(src_row*width+src_col)*3+2] = (uint8_t)(new_b < 0 ? 0 :(new_b > 255 ? 255 : new_b));
+        }
     }
     return 0;
 }

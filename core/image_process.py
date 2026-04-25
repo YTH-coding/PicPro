@@ -26,6 +26,7 @@ class ImageProcessor:
         - 调用"test_c\image_process.dll"的数据接口,仅提供基本操作
         - image_process.dll由gcc对image_process.c编译而来
         - 使用这个类，可以比Python的原生操作要快很多
+        - 使用前，请确保数组在内存中连续，可以看参数img_data.flags['C_CONTIGUOUS']，用np.ascontiguousarray()使其连续
     Examples:
         >>> process = ImageProcessor()
 
@@ -63,6 +64,7 @@ class ImageProcessor:
             POINTER(c_uint8), # green
             POINTER(c_uint8), # blue
         ]
+        self.lib.gray_set_color.restype = c_int
 
         self.lib.binarization.argtypes = [
             POINTER(c_uint8),  # gray_data（指针）
@@ -71,6 +73,7 @@ class ImageProcessor:
             POINTER(c_uint8),   # return_gray_data（指针）
             c_uint8
         ]
+        self.lib.binarization.restype = c_int
 
         self.lib.gray_reversed.argtypes = [ #说是灰度反转，但是稍微操作一下就是彩图反转
             POINTER(c_uint8),  # gray_data（指针）
@@ -78,6 +81,7 @@ class ImageProcessor:
             c_int,             # height
             POINTER(c_uint8),   # return_gray_data（指针）
         ]
+        self.lib.gray_reversed.restype = c_int
 
         self.lib.rotate_gray_90_cw.argtypes = [
             POINTER(c_uint8),  # gray_data（指针）
@@ -133,6 +137,27 @@ class ImageProcessor:
         ]
         self.lib.color_matrix.restype = c_int
 
+        # int convolution_gray_std(const uint8_t* src, int height, int width, uint8_t* dst, const float* kernel, int kernel_edge)
+        self.lib.convolution_gray_std.argtypes = [
+            POINTER(c_uint8),
+            c_int,
+            c_int,
+            POINTER(c_uint8),
+            POINTER(c_float),
+            c_int
+        ]
+        self.lib.convolution_gray_std.restype = c_int
+
+        # int convolution_rgb_std(const uint8_t* src, int height, int width, uint8_t* dst, const float* kernel, int kernel_edge)
+        self.lib.convolution_rgb_std.argtypes = [
+            POINTER(c_uint8),
+            c_int,
+            c_int,
+            POINTER(c_uint8),
+            POINTER(c_float),
+            c_int
+        ]
+        self.lib.convolution_rgb_std.restype = c_int
     ### 直接的接口函数
     def rgb2gray(self, rgb_data: np.ndarray, weights:Tuple = (0.299, 0.587, 0.114)) -> np.ndarray:
         """
@@ -174,16 +199,22 @@ class ImageProcessor:
         """
         height, width = gray_data.shape
 
-        # 准备颜色映射表
-        if self.get_class_of_color_map(color_map) == "int_tuple":
+        first_value = next(iter(color_map.values())) # 第一个键值对的值
+        if isinstance(first_value, tuple) and len(first_value)== 3 and all(isinstance(x, int) for x in first_value):
             gray_arr, red_arr, green_arr, blue_arr = self.create_color_list_from_dict(color_map)
-        elif self.get_class_of_color_map(color_map) == "int_string":
+        elif isinstance(first_value, str):
             color_map_ = {}
             for gray, string in color_map.items():
-                color_map_[gray] = self.hex_to_rgb(string)
+                hex_color = string.lstrip('#')
+                if len(hex_color) != 6:
+                    raise ValueError(f"颜色字符串必须是6位十六进制数，得到: {hex_color}")
+                r = int(hex_color[0:2], 16)
+                g = int(hex_color[2:4], 16)
+                b = int(hex_color[4:6], 16)
+                color_map_[gray] = (r, g, b)
             gray_arr, red_arr, green_arr, blue_arr = self.create_color_list_from_dict(color_map_)
         else:
-            raise ValueError("不支持的color_map类型")
+            raise ValueError("不支持的颜色映射表类型")
         
         gray_to_idx = np.zeros(256, dtype=np.uint8) # 256个数字的转换表
         for idx, gray in enumerate(gray_arr):
@@ -229,8 +260,35 @@ class ImageProcessor:
         if result != 0:
             raise RuntimeError("binarization C函数执行失败")
         return return_gray_data
+    
+    def binarization(self, img_data:np.ndarray, bound:int, weights:Tuple =(0.299, 0.587, 0.114))->np.ndarray:
+        """
+        将图像数据二值化
 
-    def rotate_90_gray(self, image_array: np.ndarray, clockwise: bool = True) -> np.ndarray:
+        Args:
+            img_data : 输入图像, RGB图(H,W,3) or 灰度图(H,W), (np.ndarray, np.uint8)
+            bound : 边界值，大于该边界值变为255，小于或等于该边界值变为0
+            reversed : 是否反转，不反转就是亮的地方亮
+            weights : 灰度图的操作不需要这个,默认值为(0.299, 0.587, 0.114)
+        Returns:
+            return_gray_data : 灰度图像（numpy 数组，shape 为 (height, width)，dtype=uint8）
+        """
+        # print(weights)
+        if img_data.ndim not in [2, 3]:
+            raise ValueError(f"不支持的数组维度: {img_data.ndim}，必须是2(灰度)或3(RGB)")
+        
+        if img_data.ndim == 3 and img_data.shape[2] != 3:
+            raise ValueError(f"RGB图像必须形状为(H,W,3)，得到: {img_data.shape}")
+        
+        if img_data.ndim == 2:
+            pic = self.gray_binarization(img_data, bound)
+        else:
+            gray_data = self.rgb2gray(img_data, weights)
+            pic = self.gray_binarization(gray_data, bound)
+        
+        return pic
+
+    def _rotate_90_gray(self, image_array: np.ndarray, clockwise: bool = True) -> np.ndarray:
         """
         旋转图像90度（支持灰度和RGB图像）
         
@@ -244,7 +302,6 @@ class ImageProcessor:
         Raises:
             ValueError: 如果输入数组形状不支持
         """
-        # 获取尺寸
         height, width = image_array.shape
         
         dst_height, dst_width = width, height  # 旋转后宽高互换
@@ -268,7 +325,7 @@ class ImageProcessor:
         
         return rotated
     
-    def rotate_90_rgb(self, image_array: np.ndarray, clockwise: bool = True) -> np.ndarray:
+    def _rotate_90_rgb(self, image_array: np.ndarray, clockwise: bool = True) -> np.ndarray:
         """
         旋转图像90度（支持灰度和RGB图像）
         
@@ -308,37 +365,19 @@ class ImageProcessor:
         
         return rotated
     
-    ### 对于接口函数最基本的封装或者另类用法
-    def binarization(self, img_data:np.ndarray, bound:int, weights:Tuple =(0.299, 0.587, 0.114))->np.ndarray:
-        """
-        将图像数据二值化
-
-        Args:
-            img_data : 输入图像, RGB图(H,W,3) or 灰度图(H,W), (np.ndarray, np.uint8)
-            bound : 边界值，大于该边界值变为255，小于或等于该边界值变为0
-            reversed : 是否反转，不反转就是亮的地方亮
-            weights : 灰度图的操作不需要这个,默认值为(0.299, 0.587, 0.114)
-        Returns:
-            return_gray_data : 灰度图像（numpy 数组，shape 为 (height, width)，dtype=uint8）
-        """
-        # print(weights)
-        if img_data.ndim not in [2, 3]:
-            raise ValueError(f"不支持的数组维度: {img_data.ndim}，必须是2(灰度)或3(RGB)")
+    def rotate_90(self, image_array: np.ndarray, clockwise: bool = True) -> np.ndarray:
+        if image_array.ndim not in [2, 3]:
+            raise ValueError(f"不支持的数组维度: {image_array.ndim}，必须是2(灰度)或3(RGB)")
         
-        if img_data.ndim == 3 and img_data.shape[2] != 3:
-            raise ValueError(f"RGB图像必须形状为(H,W,3)，得到: {img_data.shape}")
+        if image_array.ndim == 3 and image_array.shape[2] != 3:
+            raise ValueError(f"RGB图像必须形状为(H,W,3)，得到: {image_array.shape}")
         
-        # 确保数组是连续的
-        if not img_data.flags['C_CONTIGUOUS']:
-            img_data = np.ascontiguousarray(img_data)
-        
-        if img_data.ndim == 2:
-            pic = self.gray_binarization(img_data, bound)
+        if image_array.ndim == 2:
+            rotated = self._rotate_90_gray(image_array, clockwise)
         else:
-            gray_data = self.rgb2gray(img_data, weights)
-            pic = self.gray_binarization(gray_data, bound)
+            rotated = self._rotate_90_rgb(image_array, clockwise)
         
-        return pic
+        return rotated
     
     def reversed(self, img_data:np.ndarray)->np.ndarray:
         """
@@ -356,10 +395,6 @@ class ImageProcessor:
         if img_data.ndim == 3 and img_data.shape[2] != 3:
             raise ValueError(f"RGB图像必须形状为(H,W,3)，得到: {img_data.shape}")
         
-        # 确保数组是连续的
-        if not img_data.flags['C_CONTIGUOUS']:
-            img_data = np.ascontiguousarray(img_data)
-        
         if img_data.ndim == 2:
             height, width = img_data.shape
             reversed_img = np.zeros((height, width), dtype=np.uint8)
@@ -376,27 +411,10 @@ class ImageProcessor:
         if result != 0:
             raise RuntimeError("binary_reversed C函数执行失败")
         return reversed_img
-
-    def rotate_90(self, image_array: np.ndarray, clockwise: bool = True) -> np.ndarray:
-        if image_array.ndim not in [2, 3]:
-            raise ValueError(f"不支持的数组维度: {image_array.ndim}，必须是2(灰度)或3(RGB)")
-        
-        if image_array.ndim == 3 and image_array.shape[2] != 3:
-            raise ValueError(f"RGB图像必须形状为(H,W,3)，得到: {image_array.shape}")
-        
-        # 确保数组是连续的
-        if not image_array.flags['C_CONTIGUOUS']:
-            image_array = np.ascontiguousarray(image_array)
-        
-        if image_array.ndim == 2:
-            rotated = self.rotate_90_gray(image_array, clockwise)
-        else:
-            rotated = self.rotate_90_rgb(image_array, clockwise)
-        
-        return rotated
     
     def rotate(self, image_array: np.ndarray, angle: int = 90) -> np.ndarray:
         """
+        这个方法以后使用形变矩阵实现，注意，当前未实现该方法！！！
         顺时针旋转图像（支持90、180、270度）
         
         Args:
@@ -406,27 +424,139 @@ class ImageProcessor:
         Returns:
             旋转后的图像数组
         """
-        if angle % 90 != 0:
-            raise ValueError("角度必须是90的倍数")
+        pass
+
+    def document_clean(self, rgb_image: np.ndarray,
+                   red_r_thresh: int = 200,
+                   red_diff_thresh: int = 50,
+                   gray_thresh: int = 128) -> np.ndarray:
+        """
+        将手机拍摄的文档（白底黑字红章）处理成纯白、纯黑、纯红三色图。
         
-        # 标准化角度到[0, 360)
-        angle = angle % 360
-        if angle < 0:
-            angle += 360
+        Args:
+            rgb_image: 输入RGB图像 (H, W, 3), dtype=uint8
+            red_r_thresh: 红色通道最小值，默认200
+            red_diff_thresh: R与G/B的最小差值，默认50
+            gray_thresh: 黑白二值化阈值（0~255），auto_threshold=False时使用
+            auto_threshold: 是否自动计算黑白阈值（Otsu），默认True
         
-        result = image_array.copy()
+        Returns:
+            三值化后的RGB图像 (H, W, 3)
+        """
+        if rgb_image.ndim != 3 or rgb_image.shape[2] != 3:
+            raise ValueError("输入必须是RGB图像 (H, W, 3)")
         
-        # 多次应用90度旋转
-        if angle == 90:
-            result = self.rotate_90(result, clockwise=True)
-        elif angle == 180:
-            # 旋转两次90度
-            result = self.rotate_90(result, clockwise=True)
-            result = self.rotate_90(result, clockwise=True)
-        elif angle == 270:
-            result = self.rotate_90(result, clockwise=False)
+        height, width, _ = rgb_image.shape
+        dst_rgb = np.zeros((height, width, 3), dtype=np.uint8)
         
-        return result
+        src_ptr = rgb_image.ctypes.data_as(POINTER(c_uint8))
+        dst_ptr = dst_rgb.ctypes.data_as(POINTER(c_uint8))
+        
+
+        result = self.lib.clean_document(src_ptr, height, width, dst_ptr,
+                                            red_r_thresh, red_diff_thresh, gray_thresh)
+        
+        if result != 0:
+            raise RuntimeError(f"document_clean 执行失败，错误码: {result}")
+        
+        return dst_rgb
+    
+    def color_matrix(self, rgb_image:np.ndarray, color_matrix:list[list[float]]) -> np.ndarray:
+        if rgb_image.ndim != 3 or rgb_image.shape[2] != 3:
+            raise ValueError("输入必须是RGB图像 (H, W, 3)")
+        
+        height, width, _ = rgb_image.shape
+        dst_rgb = np.zeros((height, width, 3), dtype=np.uint8)
+
+        src_ptr = rgb_image.ctypes.data_as(POINTER(c_uint8))
+        dst_ptr = dst_rgb.ctypes.data_as(POINTER(c_uint8))
+        flat_matrix = [x for row in color_matrix for x in row]
+        mat_ptr = (c_float * 9)(*flat_matrix)
+
+        result = self.lib.color_matrix(src_ptr, height, width, dst_ptr, mat_ptr)
+
+        if result != 0:
+            raise RuntimeError(f"document_clean 执行失败，错误码: {result}")
+        
+        return dst_rgb
+    
+    # int convolution_gray_std(const uint8_t* src, int height, int width, uint8_t* dst, const float* kernel, int kernel_edge)
+    def _convolution_gray_std(self, gray_image:np.ndarray, kernel:np.ndarray):
+        """
+        灰度图卷积操作
+
+        Args:
+            gray_image : 输入图像，灰度图(H,W), (np.ndarray, np.uint8)
+            kernel : 卷积核, 正方形, (np.ndarray, np.float)
+        
+        Returns:
+            conv_image : 输出图像，灰度图(H,W), (np.ndarray, np.uint8)
+        """        
+        height, width = gray_image.shape
+        dst = np.zeros((height, width), dtype=np.uint8)
+
+        src_ptr = gray_image.ctypes.data_as(POINTER(c_uint8))
+        dst_ptr = dst.ctypes.data_as(POINTER(c_uint8))
+        kernel_ptr = kernel.ctypes.data_as(POINTER(c_float))
+        kernel_edge = kernel.shape[0]
+
+        result = self.lib.convolution_gray_std(src_ptr, height, width, dst_ptr, kernel_ptr, kernel_edge)
+
+        if result != 0:
+            raise RuntimeError(f"convolution_gray_std 执行失败，错误码: {result}")
+        
+        return dst
+    
+    # int convolution_rgb_std(const uint8_t* src, int height, int width, uint8_t* dst, const float* kernel, int kernel_edge)
+    def _convolution_rgb_std(self, rgb_image:np.ndarray, kernel:np.ndarray):
+        """
+        rgb彩图卷积操作
+
+        Args:
+            rgb_image: 输入RGB图像 (H, W, 3), dtype=uint8
+            kernel : 卷积核, 正方形, (np.ndarray, np.float)
+        
+        Returns:
+            conv_image : 输出RGB图像 (H, W, 3), dtype=uint8
+        """
+        height, width, _ = rgb_image.shape
+        dst = np.zeros((height, width, 3), dtype=np.uint8)
+
+        src_ptr = rgb_image.ctypes.data_as(POINTER(c_uint8))
+        dst_ptr = dst.ctypes.data_as(POINTER(c_uint8))
+        kernel_ptr = kernel.ctypes.data_as(POINTER(c_float))
+        kernel_edge = kernel.shape[0]
+
+        result = self.lib.convolution_rgb_std(src_ptr, height, width, dst_ptr, kernel_ptr, kernel_edge)
+
+        if result != 0:
+            raise RuntimeError(f"convolution_rgb_std 执行失败，错误码: {result}")
+        
+        return dst
+    
+    def convolution_std(self, image_array: np.ndarray, kernel:list[list[float]]):
+        """
+        图像卷积操作
+
+        Args:
+            image_array: 输入图像,RGB图(H,W,3)或灰度图(H,W), np.ndarray, np.uint8
+            kernel : 卷积核, 正方形, (np.ndarray, np.float)
+        
+        Returns:
+            conv_image : 输出图像,RGB图(H,W,3)或灰度图(H,W), np.ndarray, np.uint8
+        """
+        k_np = np.asarray(kernel, dtype=np.float32)
+        if image_array.ndim not in [2, 3]:
+            raise ValueError(f"不支持的数组维度: {image_array.ndim}，必须是2(灰度)或3(RGB)")
+        if k_np.shape[0] % 2 == 0:
+            raise ValueError("kernel edge must be odd")
+        
+        if image_array.ndim == 2:
+            dst = self._convolution_gray_std(image_array, k_np)
+        else:
+            dst = self._convolution_rgb_std(image_array, k_np)
+        
+        return dst
     
     ### 辅助函数
     def create_color_list_from_dict(self, color_map: Dict[int, Tuple[int, int, int]])->Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
@@ -449,117 +579,6 @@ class ImageProcessor:
         blue_arr = color_arr[:, 2].copy()
 
         return gray_arr, red_arr, green_arr, blue_arr
-
-    def get_class_of_color_map(self, color_map: Union[Dict[int, Tuple[int, int, int]], Dict[int, str]])->str:
-        """
-        判断字典类型,被类方法gray_to_color调用
-
-        Args:
-            color_map:是一个字典,要么是Dict[int, Tuple[int, int, int]],要么是Dict[int, str]
-        Return:
-            str:返回字符串，分别为"empty", "int_tuple", "int_string", "unknown_tuple"
-        """
-        if not color_map:
-            return "empty"  # 空字典
-        
-        # 获取第一个值来推断类型
-        first_value = next(iter(color_map.values()))
-        
-        if isinstance(first_value, tuple) and len(first_value) == 3:
-            # 检查是否都是整数（颜色元组）
-            if all(isinstance(x, int) for x in first_value):
-                return "int_tuple"
-            else:
-                return "unknown_tuple"
-        elif isinstance(first_value, str):
-            return "int_string"
-        else:
-            return "unknown"
-    
-    def hex_to_rgb(self, hex_color: str) -> tuple[int, int, int]:
-        """
-        将十六进制颜色字符串转换为RGB元组
-
-        Args:
-            hex_color : 十六进制颜色字符串，如 "#FF0000" 或 "FF0000"
-        
-        Returns:
-            (r, g, b) : RGB元组，如 (255, 0, 0)
-        """
-        # 移除开头的#号（如果存在）
-        hex_color = hex_color.lstrip('#')
-        
-        # 验证长度
-        if len(hex_color) != 6:
-            raise ValueError(f"颜色字符串必须是6位十六进制数，得到: {hex_color}")
-        
-        # 转换为RGB
-        r = int(hex_color[0:2], 16)
-        g = int(hex_color[2:4], 16)
-        b = int(hex_color[4:6], 16)
-        
-        return (r, g, b)
-    
-    def document_clean(self, rgb_image: np.ndarray,
-                   red_r_thresh: int = 200,
-                   red_diff_thresh: int = 50,
-                   gray_thresh: int = 128) -> np.ndarray:
-        """
-        将手机拍摄的文档（白底黑字红章）处理成纯白、纯黑、纯红三色图。
-        
-        Args:
-            rgb_image: 输入RGB图像 (H, W, 3), dtype=uint8
-            red_r_thresh: 红色通道最小值，默认200
-            red_diff_thresh: R与G/B的最小差值，默认50
-            gray_thresh: 黑白二值化阈值（0~255），auto_threshold=False时使用
-            auto_threshold: 是否自动计算黑白阈值（Otsu），默认True
-        
-        Returns:
-            三值化后的RGB图像 (H, W, 3)
-        """
-        if rgb_image.ndim != 3 or rgb_image.shape[2] != 3:
-            raise ValueError("输入必须是RGB图像 (H, W, 3)")
-        
-        # 确保数组连续
-        if not rgb_image.flags['C_CONTIGUOUS']:
-            rgb_image = np.ascontiguousarray(rgb_image)
-        
-        height, width, _ = rgb_image.shape
-        dst_rgb = np.zeros((height, width, 3), dtype=np.uint8)
-        
-        src_ptr = rgb_image.ctypes.data_as(POINTER(c_uint8))
-        dst_ptr = dst_rgb.ctypes.data_as(POINTER(c_uint8))
-        
-
-        result = self.lib.clean_document(src_ptr, height, width, dst_ptr,
-                                            red_r_thresh, red_diff_thresh, gray_thresh)
-        
-        if result != 0:
-            raise RuntimeError(f"document_clean 执行失败，错误码: {result}")
-        
-        return dst_rgb
-    
-    def color_matrix(self, rgb_image:np.ndarray, color_matrix:list[list[float]]) -> np.ndarray:
-        if rgb_image.ndim != 3 or rgb_image.shape[2] != 3:
-            raise ValueError("输入必须是RGB图像 (H, W, 3)")
-
-        if not rgb_image.flags['C_CONTIGUOUS']:
-            rgb_image = np.ascontiguousarray(rgb_image)
-        
-        height, width, _ = rgb_image.shape
-        dst_rgb = np.zeros((height, width, 3), dtype=np.uint8)
-
-        src_ptr = rgb_image.ctypes.data_as(POINTER(c_uint8))
-        dst_ptr = dst_rgb.ctypes.data_as(POINTER(c_uint8))
-        flat_matrix = [x for row in color_matrix for x in row]
-        mat_ptr = (c_float * 9)(*flat_matrix)
-
-        result = self.lib.color_matrix(src_ptr, height, width, dst_ptr, mat_ptr)
-
-        if result != 0:
-            raise RuntimeError(f"document_clean 执行失败，错误码: {result}")
-        
-        return dst_rgb
 
 # 代码运行时间装饰器
 def ProcessTime(func):
