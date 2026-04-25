@@ -49,8 +49,10 @@ python main.py
 ```
 PicPro/
 ├── main.py                        # GUI 主程序（tkinter）
-├── color.py                       # 伪彩色映射配置对话框
-├── newpic.py                      # 新建图片对话框
+│
+├── sub_ui/                        # 弹窗
+|   ├── color.py                   # 伪彩色映射配置对话框
+|   └──  newpic.py                 # 新建图片对话框
 │
 ├── core/
 │   ├── image_process.c            # C 语言图像处理核心源码
@@ -73,8 +75,10 @@ PicPro/
 ```
 main.py ──→ ImageProcessor (ctypes) ──→ image_process.dll (C 编译)
     │
-    ├── color.py        ──→ 伪彩色映射
-    ├── newpic.py       ──→ 新建图片
+    ├── sub_ui/                        # 弹窗
+    |   ├── color.py                   # 伪彩色映射配置对话框
+    |   └──  newpic.py                 # 新建图片对话框
+    |
     ├── config/
     │   ├── color_matrix.json  ──→ 滤镜参数
     │   ├── color_preset.json  ──→ 颜色预设

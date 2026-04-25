@@ -49,8 +49,10 @@ python main.py
 ```
 PicPro/
 ├── main.py                        # GUI main program (tkinter)
-├── color.py                       # Pseudo-color mapping dialog
-├── newpic.py                      # New image creation dialog
+│
+├── sub_ui/                        # dialog
+|   ├── color.py                   # Pseudo-color mapping dialog
+|   └──  newpic.py                 # New image creation dialog                  
 │
 ├── core/
 │   ├── image_process.c            # C image processing core source
@@ -73,8 +75,10 @@ PicPro/
 ```
 main.py ──→ ImageProcessor (ctypes) ──→ image_process.dll (C compiled)
     │
-    ├── color.py        ──→ Pseudo-color mapping
-    ├── newpic.py       ──→ New image creation
+    ├── sub_ui/                        # dialog
+    |   ├── color.py                   # Pseudo-color mapping dialog
+    |   └──  newpic.py                 # New image creation dialog 
+    │
     ├── config/
     │   ├── color_matrix.json  ──→ Filter parameters
     │   ├── color_preset.json  ──→ Color presets
