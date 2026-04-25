@@ -58,5 +58,77 @@
         "HEX": "#8B5E3C",
         "RGB": [139, 94, 60],
         "CMYK": [0, 32, 57, 45]
+    },
+        "ruri_iro": {
+        "Chinese_name": "瑠璃色",
+        "HEX": "#1E50A2",
+        "RGB": [30, 80, 162],
+        "CMYK": [81, 51, 0, 36]
+    },
+    "moegi_iro": {
+        "Chinese_name": "萌黄色",
+        "HEX": "#BED63C",
+        "RGB": [190, 214, 60],
+        "CMYK": [11, 0, 72, 16]
+    },
+    "ayame_iro": {
+        "Chinese_name": "菖蒲色",
+        "HEX": "#9B6FB0",
+        "RGB": [155, 111, 176],
+        "CMYK": [12, 37, 0, 31]
+    },
+    "akane_iro": {
+        "Chinese_name": "茜色",
+        "HEX": "#C73E3A",
+        "RGB": [199, 62, 58],
+        "CMYK": [0, 69, 71, 22]
+    },
+    "kon_iro": {
+        "Chinese_name": "紺青色",
+        "HEX": "#192F5A",
+        "RGB": [25, 47, 90],
+        "CMYK": [72, 48, 0, 65]
+    },
+    "uguisu_iro": {
+        "Chinese_name": "鶯色",
+        "HEX": "#5E6737",
+        "RGB": [94, 103, 55],
+        "CMYK": [9, 0, 47, 60]
+    },
+    "nasukon_iro": {
+        "Chinese_name": "茄子紺",
+        "HEX": "#3C2F47",
+        "RGB": [60, 47, 71],
+        "CMYK": [15, 34, 0, 72]
+    },
+    "sakuranezumi_iro": {
+        "Chinese_name": "桜鼠",
+        "HEX": "#CFC0C5",
+        "RGB": [207, 192, 197],
+        "CMYK": [0, 7, 5, 19]
+    },
+    "shinonome_iro": {
+        "Chinese_name": "東雲色",
+        "HEX": "#F5B199",
+        "RGB": [245, 177, 153],
+        "CMYK": [0, 28, 38, 4]
+    },
+    "kikyo_iro": {
+        "Chinese_name": "桔梗色",
+        "HEX": "#585EAA",
+        "RGB": [88, 94, 170],
+        "CMYK": [48, 45, 0, 33]
+    },
+    "kogecha_iro": {
+        "Chinese_name": "焦茶色",
+        "HEX": "#6B523A",
+        "RGB": [107, 82, 58],
+        "CMYK": [0, 23, 46, 58]
+    },
+    "usuki_iro": {
+        "Chinese_name": "薄黄",
+        "HEX": "#F4E9B0",
+        "RGB": [244, 233, 176],
+        "CMYK": [0, 5, 28, 4]
     }
 }

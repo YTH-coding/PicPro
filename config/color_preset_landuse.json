@@ -1,86 +1,236 @@
 {
-    "arable_land": {
-        "Chinese_name": "耕地",
-        "HEX": "#F5F5A0",
-        "RGB": [245, 245, 160],
-        "CMYK": [0, 0, 35, 4],
-        "description": "指种植农作物的土地。颜色方案采用淡黄色系，在专题地图中常用以区分其他地类。"
-    },
-    "garden_land": {
-        "Chinese_name": "园地",
-        "HEX": "#C8E6A0",
-        "RGB": [200, 230, 160],
-        "CMYK": [13, 0, 30, 10],
-        "description": "指种植以采集果、叶、根、茎、汁等为主的集约经营的多年生木本和草本作物的土地。颜色采用浅绿色，以示与耕地的区别。"
-    },
-    "forest_land": {
-        "Chinese_name": "林地",
-        "HEX": "#1E8C1E",
-        "RGB": [30, 140, 30],
-        "CMYK": [79, 0, 79, 45],
-        "description": "指生长乔木、竹类、灌木的土地。颜色方案采用深绿色系，直观反映植被覆盖特征。"
-    },
-    "grassland": {
-        "Chinese_name": "草地",
-        "HEX": "#78C878",
-        "RGB": [120, 200, 120],
-        "CMYK": [40, 0, 40, 22],
-        "description": "指生长草本植物为主的土地。颜色采用草绿色，与林地的深绿形成视觉层次。"
-    },
-    "commercial_service_land": {
-        "Chinese_name": "商服用地",
-        "HEX": "#FA6464",
-        "RGB": [250, 100, 100],
-        "CMYK": [0, 60, 60, 2],
-        "description": "指主要用于商业、服务业的土地。颜色采用鲜明的红色系，突出其建设用地的经济属性。"
-    },
-    "industrial_mining_land": {
-        "Chinese_name": "工矿仓储用地",
-        "HEX": "#C864A0",
-        "RGB": [200, 100, 160],
-        "CMYK": [0, 50, 20, 22],
-        "description": "指主要用于工业生产、采矿、物资存放场所的土地。颜色采用紫色系。"
-    },
-    "residential_land": {
-        "Chinese_name": "住宅用地",
-        "HEX": "#FFB4A0",
-        "RGB": [255, 180, 160],
-        "CMYK": [0, 29, 37, 0],
-        "description": "指主要用于人们生活居住的房基地及其附属设施的土地。颜色采用暖橙色。"
-    },
-    "public_management_service_land": {
-        "Chinese_name": "公共管理与公共服务用地",
-        "HEX": "#FF8C8C",
-        "RGB": [255, 140, 140],
-        "CMYK": [0, 45, 45, 0],
-        "description": "指用于机关团体、新闻出版、科教文卫等公共服务的土地。颜色采用浅红色。"
-    },
-    "special_land": {
-        "Chinese_name": "特殊用地",
-        "HEX": "#DC8C8C",
-        "RGB": [220, 140, 140],
-        "CMYK": [0, 36, 36, 14],
-        "description": "指用于军事设施、涉外、宗教、殡葬等特殊用途的土地。颜色采用暗红色。"
-    },
-    "transportation_land": {
-        "Chinese_name": "交通运输用地",
-        "HEX": "#A0A0A0",
-        "RGB": [160, 160, 160],
-        "CMYK": [0, 0, 0, 37],
-        "description": "指用于运输通行的地面线路、场站等土地。颜色方案采用灰色系。"
-    },
-    "water_conservancy_land": {
-        "Chinese_name": "水域及水利设施用地",
-        "HEX": "#6496FF",
-        "RGB": [100, 150, 255],
-        "CMYK": [61, 41, 0, 0],
-        "description": "指陆地水域、海涂、沟渠等用地。颜色采用蓝色系，与水体的自然属性相符。"
-    },
-    "other_land": {
-        "Chinese_name": "其他土地",
-        "HEX": "#D2D2D2",
-        "RGB": [210, 210, 210],
-        "CMYK": [0, 0, 0, 18],
-        "description": "指上述地类以外的其他类型的土地，如空闲地、设施农用地、田坎等。颜色采用浅灰色。"
-    }
+  "cultivated_land": {
+    "Chinese_name": "耕地",
+    "HEX": "#F5F8DC",
+    "RGB": [245, 248, 220],
+    "CMYK": [1, 0, 11, 3]
+  },
+  "garden_land": {
+    "Chinese_name": "园地",
+    "HEX": "#BFE9AA",
+    "RGB": [191, 233, 170],
+    "CMYK": [18, 0, 27, 9]
+  },
+  "forest_land": {
+    "Chinese_name": "林地",
+    "HEX": "#68B167",
+    "RGB": [104, 177, 103],
+    "CMYK": [41, 0, 42, 31]
+  },
+  "grassland": {
+    "Chinese_name": "草地",
+    "HEX": "#CDF57A",
+    "RGB": [205, 245, 122],
+    "CMYK": [16, 0, 50, 4]
+  },
+  "wetland": {
+    "Chinese_name": "湿地",
+    "HEX": "#65CDAA",
+    "RGB": [101, 205, 170],
+    "CMYK": [51, 0, 17, 20]
+  },
+  "agricultural_facility_construction_land": {
+    "Chinese_name": "农业设施建设用地",
+    "HEX": "#D8D79F",
+    "RGB": [216, 215, 159],
+    "CMYK": [0, 0, 26, 15]
+  },
+  "urban_residential_land": {
+    "Chinese_name": "城镇住宅用地/城镇居住用地",
+    "HEX": "#FFFF2D",
+    "RGB": [255, 255, 45],
+    "CMYK": [0, 0, 82, 0]
+  },
+  "rural_residential_land": {
+    "Chinese_name": "农村宅基地/农村居住用地",
+    "HEX": "#FFD380",
+    "RGB": [255, 211, 128],
+    "CMYK": [0, 17, 50, 0]
+  },
+  "government_agency_land": {
+    "Chinese_name": "机关团体用地",
+    "HEX": "#FF00FF",
+    "RGB": [255, 0, 255],
+    "CMYK": [0, 100, 0, 0]
+  },
+  "cultural_land": {
+    "Chinese_name": "文化用地",
+    "HEX": "#FF7F00",
+    "RGB": [255, 127, 0],
+    "CMYK": [0, 50, 100, 0]
+  },
+  "educational_land": {
+    "Chinese_name": "教育用地",
+    "HEX": "#FF85C9",
+    "RGB": [255, 133, 201],
+    "CMYK": [0, 48, 21, 0]
+  },
+  "scientific_research_land": {
+    "Chinese_name": "科研用地",
+    "HEX": "#E6005C",
+    "RGB": [230, 0, 92],
+    "CMYK": [0, 100, 60, 10]
+  },
+  "sports_land": {
+    "Chinese_name": "体育用地",
+    "HEX": "#00A57C",
+    "RGB": [0, 165, 124],
+    "CMYK": [100, 0, 25, 35]
+  },
+  "medical_health_land": {
+    "Chinese_name": "医疗卫生用地",
+    "HEX": "#FF7F7E",
+    "RGB": [255, 127, 126],
+    "CMYK": [0, 50, 51, 0]
+  },
+  "social_welfare_land": {
+    "Chinese_name": "社会福利用地",
+    "HEX": "#FF9F7F",
+    "RGB": [255, 159, 127],
+    "CMYK": [0, 38, 50, 0]
+  },
+  "commercial_service_land": {
+    "Chinese_name": "商业服务业用地",
+    "HEX": "#FF0000",
+    "RGB": [255, 0, 0],
+    "CMYK": [0, 100, 100, 0]
+  },
+  "industrial_land": {
+    "Chinese_name": "工业用地",
+    "HEX": "#BB9674",
+    "RGB": [187, 150, 116],
+    "CMYK": [0, 20, 38, 27]
+  },
+  "mining_land": {
+    "Chinese_name": "采矿用地",
+    "HEX": "#9E6C54",
+    "RGB": [158, 108, 84],
+    "CMYK": [0, 32, 47, 38]
+  },
+  "salt_land": {
+    "Chinese_name": "盐田用地",
+    "HEX": "#0000FF",
+    "RGB": [0, 0, 255],
+    "CMYK": [100, 100, 0, 0]
+  },
+  "warehouse_land": {
+    "Chinese_name": "仓储用地",
+    "HEX": "#8761D3",
+    "RGB": [135, 97, 211],
+    "CMYK": [36, 54, 0, 17]
+  },
+  "reserve_library_land": {
+    "Chinese_name": "储备库用地",
+    "HEX": "#9999FF",
+    "RGB": [153, 153, 255],
+    "CMYK": [40, 40, 0, 0]
+  },
+  "transportation_land": {
+    "Chinese_name": "交通运输用地",
+    "HEX": "#B7B7B7",
+    "RGB": [183, 183, 183],
+    "CMYK": [0, 0, 0, 28]
+  },
+  "highway_land": {
+    "Chinese_name": "公路用地",
+    "HEX": "#ADADAD",
+    "RGB": [173, 173, 173],
+    "CMYK": [0, 0, 0, 32]
+  },
+  "urban_road_land": {
+    "Chinese_name": "城镇道路用地",
+    "HEX": "#A3A3A3",
+    "RGB": [163, 163, 163],
+    "CMYK": [0, 0, 0, 36]
+  },
+  "pipeline_transport_land": {
+    "Chinese_name": "管道运输用地",
+    "HEX": "#999999",
+    "RGB": [153, 153, 153],
+    "CMYK": [0, 0, 0, 40]
+  },
+  "public_utility_land": {
+    "Chinese_name": "公用设施用地",
+    "HEX": "#006380",
+    "RGB": [0, 99, 128],
+    "CMYK": [100, 23, 0, 50]
+  },
+  "park_green_space": {
+    "Chinese_name": "公园绿地",
+    "HEX": "#00FF00",
+    "RGB": [0, 255, 0],
+    "CMYK": [100, 0, 100, 0]
+  },
+  "protective_green_space": {
+    "Chinese_name": "防护绿地",
+    "HEX": "#148D4A",
+    "RGB": [20, 141, 74],
+    "CMYK": [86, 0, 48, 45]
+  },
+  "square_land": {
+    "Chinese_name": "广场用地",
+    "HEX": "#ACFFCF",
+    "RGB": [172, 255, 207],
+    "CMYK": [33, 0, 19, 0]
+  },
+  "special_land": {
+    "Chinese_name": "特殊用地",
+    "HEX": "#859156",
+    "RGB": [133, 145, 86],
+    "CMYK": [8, 0, 41, 43]
+  },
+  "reserved_white_land": {
+    "Chinese_name": "留白用地",
+    "HEX": "#FFFFFF",
+    "RGB": [255, 255, 255],
+    "CMYK": [0, 0, 0, 0]
+  },
+  "continental_water": {
+    "Chinese_name": "陆地水域",
+    "HEX": "#338EC0",
+    "RGB": [51, 142, 192],
+    "CMYK": [73, 26, 0, 25]
+  },
+  "fishery_sea": {
+    "Chinese_name": "渔业用海",
+    "HEX": "#94D5EB",
+    "RGB": [148, 213, 235],
+    "CMYK": [37, 9, 0, 8]
+  },
+  "industrial_mining_communication_sea": {
+    "Chinese_name": "工矿通信用海",
+    "HEX": "#56A6D3",
+    "RGB": [86, 166, 211],
+    "CMYK": [59, 21, 0, 17]
+  },
+  "transportation_sea": {
+    "Chinese_name": "交通运输用海",
+    "HEX": "#6C8BD1",
+    "RGB": [108, 139, 209],
+    "CMYK": [48, 33, 0, 18]
+  },
+  "recreation_sea": {
+    "Chinese_name": "游憩用海",
+    "HEX": "#1AAAE6",
+    "RGB": [26, 170, 230],
+    "CMYK": [89, 26, 0, 10]
+  },
+  "special_sea": {
+    "Chinese_name": "特殊用海",
+    "HEX": "#83BCD6",
+    "RGB": [131, 188, 214],
+    "CMYK": [39, 12, 0, 16]
+  },
+  "other_land": {
+    "Chinese_name": "其他土地",
+    "HEX": "#EEEEEE",
+    "RGB": [238, 238, 238],
+    "CMYK": [0, 0, 0, 7]
+  },
+  "other_sea": {
+    "Chinese_name": "其他海域",
+    "HEX": "#D6EAF3",
+    "RGB": [214, 234, 243],
+    "CMYK": [12, 4, 0, 5]
+  }
 }

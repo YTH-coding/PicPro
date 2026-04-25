@@ -1,0 +1,74 @@
+{
+    "cyber_neon_magenta": {
+        "Chinese_name": "赛博霓虹洋红",
+        "HEX": "#FF00FF",
+        "RGB": [255, 0, 255],
+        "CMYK": [0, 100, 0, 0]
+    },
+    "cyber_electric_cyan": {
+        "Chinese_name": "赛博电光青",
+        "HEX": "#00FFFF",
+        "RGB": [0, 255, 255],
+        "CMYK": [100, 0, 0, 0]
+    },
+    "cyber_deep_purple": {
+        "Chinese_name": "赛博暗夜紫",
+        "HEX": "#1A0033",
+        "RGB": [26, 0, 51],
+        "CMYK": [49, 100, 0, 80]
+    },
+    "cyber_laser_blue": {
+        "Chinese_name": "赛博镭射蓝",
+        "HEX": "#0040FF",
+        "RGB": [0, 64, 255],
+        "CMYK": [100, 75, 0, 0]
+    },
+    "cyber_glitch_pink": {
+        "Chinese_name": "赛博故障粉",
+        "HEX": "#FF007F",
+        "RGB": [255, 0, 127],
+        "CMYK": [0, 100, 50, 0]
+    },
+    "cyber_deep_space_blue": {
+        "Chinese_name": "赛博深空蓝",
+        "HEX": "#0B0033",
+        "RGB": [11, 0, 51],
+        "CMYK": [78, 100, 0, 80]
+    },
+    "cyber_yellow": {
+        "Chinese_name": "赛博警示黄",
+        "HEX": "#FFD300",
+        "RGB": [255, 211, 0],
+        "CMYK": [0, 17, 100, 0]
+    },
+    "cyber_neon_green": {
+        "Chinese_name": "赛博霓虹绿",
+        "HEX": "#39FF14",
+        "RGB": [57, 255, 20],
+        "CMYK": [78, 0, 92, 0]
+    },
+    "cyber_dark_void": {
+        "Chinese_name": "赛博虚空黑",
+        "HEX": "#0D0D0D",
+        "RGB": [13, 13, 13],
+        "CMYK": [0, 0, 0, 95]
+    },
+    "cyber_holographic_purple": {
+        "Chinese_name": "赛博全息紫",
+        "HEX": "#B366FF",
+        "RGB": [179, 102, 255],
+        "CMYK": [30, 60, 0, 0]
+    },
+    "cyber_teal": {
+        "Chinese_name": "赛博青蓝",
+        "HEX": "#00A896",
+        "RGB": [0, 168, 150],
+        "CMYK": [100, 0, 11, 34]
+    },
+    "cyber_crimson": {
+        "Chinese_name": "赛博猩红",
+        "HEX": "#FF003C",
+        "RGB": [255, 0, 60],
+        "CMYK": [0, 100, 76, 0]
+    }
+}

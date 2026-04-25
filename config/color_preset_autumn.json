@@ -1,0 +1,92 @@
+{
+    "autumn_maple": {
+        "Chinese_name": "秋季枫叶红",
+        "HEX": "#C1443A",
+        "RGB": [193, 68, 58],
+        "CMYK": [0, 65, 70, 24]
+    },
+    "autumn_pumpkin": {
+        "Chinese_name": "秋季南瓜橙",
+        "HEX": "#D4823D",
+        "RGB": [212, 130, 61],
+        "CMYK": [0, 39, 71, 17]
+    },
+    "autumn_mustard": {
+        "Chinese_name": "秋季芥末黄",
+        "HEX": "#D4A843",
+        "RGB": [212, 168, 67],
+        "CMYK": [0, 21, 68, 17]
+    },
+    "autumn_olive": {
+        "Chinese_name": "秋季橄榄绿",
+        "HEX": "#6B6E41",
+        "RGB": [107, 110, 65],
+        "CMYK": [3, 0, 41, 57]
+    },
+    "autumn_rust": {
+        "Chinese_name": "秋季铁锈红",
+        "HEX": "#B15533",
+        "RGB": [177, 85, 51],
+        "CMYK": [0, 52, 71, 31]
+    },
+    "autumn_burgundy": {
+        "Chinese_name": "秋季勃艮第酒红",
+        "HEX": "#6E2B2F",
+        "RGB": [110, 43, 47],
+        "CMYK": [0, 61, 57, 57]
+    },
+    "autumn_deep_teal": {
+        "Chinese_name": "秋季深松石绿",
+        "HEX": "#3D6B64",
+        "RGB": [61, 107, 100],
+        "CMYK": [43, 0, 7, 58]
+    },
+    "autumn_camel": {
+        "Chinese_name": "秋季驼色",
+        "HEX": "#BF9967",
+        "RGB": [191, 153, 103],
+        "CMYK": [0, 20, 46, 25]
+    },
+    "autumn_golden_rod": {
+        "Chinese_name": "秋季秋麒麟黄",
+        "HEX": "#C4943B",
+        "RGB": [196, 148, 59],
+        "CMYK": [0, 24, 70, 23]
+    },
+    "autumn_burnt_orange": {
+        "Chinese_name": "秋季焦糖橘",
+        "HEX": "#C06732",
+        "RGB": [192, 103, 50],
+        "CMYK": [0, 46, 74, 25]
+    },
+    "autumn_pine_green": {
+        "Chinese_name": "秋季松绿",
+        "HEX": "#4A5D49",
+        "RGB": [74, 93, 73],
+        "CMYK": [20, 0, 22, 64]
+    },
+    "autumn_copper": {
+        "Chinese_name": "秋季铜色",
+        "HEX": "#B8734A",
+        "RGB": [184, 115, 74],
+        "CMYK": [0, 38, 60, 28]
+    },
+    "autumn_nut_brown": {
+        "Chinese_name": "秋季榛果棕",
+        "HEX": "#8E5E3E",
+        "RGB": [142, 94, 62],
+        "CMYK": [0, 34, 56, 44]
+    },
+    "autumn_warm_grey": {
+        "Chinese_name": "秋季暖灰褐",
+        "HEX": "#A59980",
+        "RGB": [165, 153, 128],
+        "CMYK": [0, 7, 22, 35]
+    },
+    "autumn_deep_plum": {
+        "Chinese_name": "秋季深梅紫",
+        "HEX": "#5E3150",
+        "RGB": [94, 49, 80],
+        "CMYK": [0, 48, 15, 63]
+    }
+}

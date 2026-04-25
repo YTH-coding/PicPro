@@ -1,0 +1,92 @@
+{
+    "skin_porcelain": {
+        "Chinese_name": "肤色-陶瓷白",
+        "HEX": "#FEF1E4",
+        "RGB": [254, 241, 228],
+        "CMYK": [0, 5, 10, 0]
+    },
+    "skin_ivory": {
+        "Chinese_name": "肤色-象牙白",
+        "HEX": "#FBE4C8",
+        "RGB": [251, 228, 200],
+        "CMYK": [0, 9, 20, 2]
+    },
+    "skin_fair": {
+        "Chinese_name": "肤色-白皙",
+        "HEX": "#FAD5B5",
+        "RGB": [250, 213, 181],
+        "CMYK": [0, 15, 28, 2]
+    },
+    "skin_light_warm": {
+        "Chinese_name": "肤色-浅暖",
+        "HEX": "#F0C5A2",
+        "RGB": [240, 197, 162],
+        "CMYK": [0, 18, 33, 6]
+    },
+    "skin_light_cool": {
+        "Chinese_name": "肤色-浅冷",
+        "HEX": "#F0C8B8",
+        "RGB": [240, 200, 184],
+        "CMYK": [0, 17, 23, 6]
+    },
+    "skin_sand": {
+        "Chinese_name": "肤色-沙色",
+        "HEX": "#E2B898",
+        "RGB": [226, 184, 152],
+        "CMYK": [0, 19, 33, 11]
+    },
+    "skin_medium_warm": {
+        "Chinese_name": "肤色-中暖",
+        "HEX": "#D4A373",
+        "RGB": [212, 163, 115],
+        "CMYK": [0, 23, 46, 17]
+    },
+    "skin_medium_neutral": {
+        "Chinese_name": "肤色-中自然",
+        "HEX": "#C69872",
+        "RGB": [198, 152, 114],
+        "CMYK": [0, 23, 42, 22]
+    },
+    "skin_olive": {
+        "Chinese_name": "肤色-橄榄调",
+        "HEX": "#C19A6B",
+        "RGB": [193, 154, 107],
+        "CMYK": [0, 20, 45, 24]
+    },
+    "skin_honey": {
+        "Chinese_name": "肤色-蜜色",
+        "HEX": "#B8864B",
+        "RGB": [184, 134, 75],
+        "CMYK": [0, 27, 59, 28]
+    },
+    "skin_tan": {
+        "Chinese_name": "肤色-小麦色",
+        "HEX": "#A67B5B",
+        "RGB": [166, 123, 91],
+        "CMYK": [0, 26, 45, 35]
+    },
+    "skin_caramel": {
+        "Chinese_name": "肤色-焦糖色",
+        "HEX": "#8D5A3D",
+        "RGB": [141, 90, 61],
+        "CMYK": [0, 36, 57, 45]
+    },
+    "skin_mocha": {
+        "Chinese_name": "肤色-摩卡色",
+        "HEX": "#6B4226",
+        "RGB": [107, 66, 38],
+        "CMYK": [0, 38, 64, 58]
+    },
+    "skin_deep_brown": {
+        "Chinese_name": "肤色-深棕",
+        "HEX": "#4A2F1B",
+        "RGB": [74, 47, 27],
+        "CMYK": [0, 36, 64, 71]
+    },
+    "skin_espresso": {
+        "Chinese_name": "肤色-浓咖",
+        "HEX": "#3B2314",
+        "RGB": [59, 35, 20],
+        "CMYK": [0, 41, 66, 77]
+    }
+}

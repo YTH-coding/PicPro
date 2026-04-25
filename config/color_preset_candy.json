@@ -1,0 +1,92 @@
+{
+    "candy_strawberry_red": {
+        "Chinese_name": "糖果草莓红",
+        "HEX": "#FF4B5C",
+        "RGB": [255, 75, 92],
+        "CMYK": [0, 71, 64, 0]
+    },
+    "candy_lemon_yellow": {
+        "Chinese_name": "糖果柠檬黄",
+        "HEX": "#FFE135",
+        "RGB": [255, 225, 53],
+        "CMYK": [0, 12, 79, 0]
+    },
+    "candy_green_apple": {
+        "Chinese_name": "糖果青苹果绿",
+        "HEX": "#9DE04E",
+        "RGB": [157, 224, 78],
+        "CMYK": [30, 0, 65, 12]
+    },
+    "candy_blueberry": {
+        "Chinese_name": "糖果蓝莓蓝",
+        "HEX": "#4B7BFF",
+        "RGB": [75, 123, 255],
+        "CMYK": [71, 52, 0, 0]
+    },
+    "candy_orange": {
+        "Chinese_name": "糖果甜橙",
+        "HEX": "#FF8C42",
+        "RGB": [255, 140, 66],
+        "CMYK": [0, 45, 74, 0]
+    },
+    "candy_grape": {
+        "Chinese_name": "糖果葡萄紫",
+        "HEX": "#C77DFF",
+        "RGB": [199, 125, 255],
+        "CMYK": [22, 51, 0, 0]
+    },
+    "candy_watermelon": {
+        "Chinese_name": "糖果西瓜红",
+        "HEX": "#FF6B7A",
+        "RGB": [255, 107, 122],
+        "CMYK": [0, 58, 52, 0]
+    },
+    "candy_raspberry": {
+        "Chinese_name": "糖果树莓粉",
+        "HEX": "#FF4F94",
+        "RGB": [255, 79, 148],
+        "CMYK": [0, 69, 42, 0]
+    },
+    "candy_mango": {
+        "Chinese_name": "糖果芒果黄",
+        "HEX": "#FFB845",
+        "RGB": [255, 184, 69],
+        "CMYK": [0, 28, 73, 0]
+    },
+    "candy_peppermint": {
+        "Chinese_name": "糖果薄荷绿",
+        "HEX": "#6BE8B5",
+        "RGB": [107, 232, 181],
+        "CMYK": [54, 0, 22, 9]
+    },
+    "candy_bubblegum": {
+        "Chinese_name": "糖果泡泡糖粉",
+        "HEX": "#FFA6D5",
+        "RGB": [255, 166, 213],
+        "CMYK": [0, 35, 16, 0]
+    },
+    "candy_cotton_candy": {
+        "Chinese_name": "糖果棉花糖蓝",
+        "HEX": "#A8D8FF",
+        "RGB": [168, 216, 255],
+        "CMYK": [34, 15, 0, 0]
+    },
+    "candy_lime": {
+        "Chinese_name": "糖果酸柠绿",
+        "HEX": "#D4F02E",
+        "RGB": [212, 240, 46],
+        "CMYK": [12, 0, 81, 6]
+    },
+    "candy_cherry": {
+        "Chinese_name": "糖果樱桃红",
+        "HEX": "#E41B3E",
+        "RGB": [228, 27, 62],
+        "CMYK": [0, 88, 73, 11]
+    },
+    "candy_tangerine": {
+        "Chinese_name": "糖果柑橘橙",
+        "HEX": "#FF9B54",
+        "RGB": [255, 155, 84],
+        "CMYK": [0, 39, 67, 0]
+    }
+}

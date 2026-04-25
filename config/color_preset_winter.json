@@ -1,0 +1,92 @@
+{
+    "winter_snow_white": {
+        "Chinese_name": "冬季雪白",
+        "HEX": "#FFFFFF",
+        "RGB": [255, 255, 255],
+        "CMYK": [0, 0, 0, 0]
+    },
+    "winter_true_red": {
+        "Chinese_name": "冬季正红",
+        "HEX": "#CC0000",
+        "RGB": [204, 0, 0],
+        "CMYK": [0, 100, 100, 20]
+    },
+    "winter_royal_blue": {
+        "Chinese_name": "冬季宝蓝",
+        "HEX": "#0033A0",
+        "RGB": [0, 51, 160],
+        "CMYK": [100, 68, 0, 37]
+    },
+    "winter_emerald": {
+        "Chinese_name": "冬季祖母绿",
+        "HEX": "#005C4A",
+        "RGB": [0, 92, 74],
+        "CMYK": [100, 0, 20, 64]
+    },
+    "winter_hot_pink": {
+        "Chinese_name": "冬季亮粉",
+        "HEX": "#E6007E",
+        "RGB": [230, 0, 126],
+        "CMYK": [0, 100, 45, 10]
+    },
+    "winter_jade_green": {
+        "Chinese_name": "冬季翡翠绿",
+        "HEX": "#00A36C",
+        "RGB": [0, 163, 108],
+        "CMYK": [100, 0, 34, 36]
+    },
+    "winter_magenta": {
+        "Chinese_name": "冬季品红",
+        "HEX": "#D3006E",
+        "RGB": [211, 0, 110],
+        "CMYK": [0, 100, 48, 17]
+    },
+    "winter_icy_blue": {
+        "Chinese_name": "冬季冰蓝",
+        "HEX": "#D5F0FF",
+        "RGB": [213, 240, 255],
+        "CMYK": [16, 6, 0, 0]
+    },
+    "winter_silver": {
+        "Chinese_name": "冬季银灰",
+        "HEX": "#C0C0C0",
+        "RGB": [192, 192, 192],
+        "CMYK": [0, 0, 0, 25]
+    },
+    "winter_black": {
+        "Chinese_name": "冬季墨黑",
+        "HEX": "#1A1A1A",
+        "RGB": [26, 26, 26],
+        "CMYK": [0, 0, 0, 90]
+    },
+    "winter_violet": {
+        "Chinese_name": "冬季紫罗兰",
+        "HEX": "#5C2C8A",
+        "RGB": [92, 44, 138],
+        "CMYK": [33, 68, 0, 46]
+    },
+    "winter_cool_grey": {
+        "Chinese_name": "冬季冷灰",
+        "HEX": "#D0D6DE",
+        "RGB": [208, 214, 222],
+        "CMYK": [6, 4, 0, 13]
+    },
+    "winter_crimson": {
+        "Chinese_name": "冬季深绯红",
+        "HEX": "#9B1B30",
+        "RGB": [155, 27, 48],
+        "CMYK": [0, 83, 69, 39]
+    },
+    "winter_sapphire": {
+        "Chinese_name": "冬季宝石蓝",
+        "HEX": "#0F4C81",
+        "RGB": [15, 76, 129],
+        "CMYK": [88, 41, 0, 49]
+    },
+    "winter_pine": {
+        "Chinese_name": "冬季松柏绿",
+        "HEX": "#1B4D3E",
+        "RGB": [27, 77, 62],
+        "CMYK": [65, 0, 19, 70]
+    }
+}

@@ -13,7 +13,7 @@ class ColorMapping():
         self.dialog = tk.Toplevel(parent)
         self._updating = False  # guard against recursive trace calls
 
-        self.dialog.title("ColorFul")
+        self.dialog.title("Color")
         self.dialog.configure(bg="#FFFFFF")
         self.dialog.geometry("800x600")
         self.dialog.minsize(800, 600)

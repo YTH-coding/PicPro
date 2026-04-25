@@ -1,0 +1,92 @@
+{
+    "spring_cream": {
+        "Chinese_name": "春季奶油杏",
+        "HEX": "#FDE8D0",
+        "RGB": [253, 232, 208],
+        "CMYK": [0, 8, 18, 1]
+    },
+    "spring_peach_blossom": {
+        "Chinese_name": "春季桃花粉",
+        "HEX": "#FADADD",
+        "RGB": [250, 218, 221],
+        "CMYK": [0, 13, 12, 2]
+    },
+    "spring_bud_green": {
+        "Chinese_name": "春季嫩芽绿",
+        "HEX": "#D4EEB6",
+        "RGB": [212, 238, 182],
+        "CMYK": [11, 0, 24, 7]
+    },
+    "spring_primrose_yellow": {
+        "Chinese_name": "春季迎春黄",
+        "HEX": "#FFF1A0",
+        "RGB": [255, 241, 160],
+        "CMYK": [0, 5, 37, 0]
+    },
+    "spring_sky_blue": {
+        "Chinese_name": "春季晴空蓝",
+        "HEX": "#B7E3F5",
+        "RGB": [183, 227, 245],
+        "CMYK": [25, 7, 0, 4]
+    },
+    "spring_coral_pink": {
+        "Chinese_name": "春季珊瑚粉",
+        "HEX": "#FFC6BC",
+        "RGB": [255, 198, 188],
+        "CMYK": [0, 22, 26, 0]
+    },
+    "spring_lilac": {
+        "Chinese_name": "春季丁香紫",
+        "HEX": "#E2CCE6",
+        "RGB": [226, 204, 230],
+        "CMYK": [2, 11, 0, 10]
+    },
+    "spring_apricot": {
+        "Chinese_name": "春季杏粉",
+        "HEX": "#FFD9B5",
+        "RGB": [255, 217, 181],
+        "CMYK": [0, 15, 29, 0]
+    },
+    "spring_mint": {
+        "Chinese_name": "春季薄荷绿",
+        "HEX": "#C6F2DB",
+        "RGB": [198, 242, 219],
+        "CMYK": [18, 0, 10, 5]
+    },
+    "spring_canary_yellow": {
+        "Chinese_name": "春季金丝雀黄",
+        "HEX": "#FFEE8C",
+        "RGB": [255, 238, 140],
+        "CMYK": [0, 7, 45, 0]
+    },
+    "spring_apple_red": {
+        "Chinese_name": "春季苹果红",
+        "HEX": "#FF8C94",
+        "RGB": [255, 140, 148],
+        "CMYK": [0, 45, 42, 0]
+    },
+    "spring_green_tea": {
+        "Chinese_name": "春季新茶绿",
+        "HEX": "#C1DEA6",
+        "RGB": [193, 222, 166],
+        "CMYK": [13, 0, 25, 13]
+    },
+    "spring_periwinkle": {
+        "Chinese_name": "春季长春花蓝",
+        "HEX": "#C8D6F5",
+        "RGB": [200, 214, 245],
+        "CMYK": [18, 13, 0, 4]
+    },
+    "spring_salmon": {
+        "Chinese_name": "春季鲑鱼粉",
+        "HEX": "#FFAB91",
+        "RGB": [255, 171, 145],
+        "CMYK": [0, 33, 43, 0]
+    },
+    "spring_warm_beige": {
+        "Chinese_name": "春季暖米色",
+        "HEX": "#F5E6D3",
+        "RGB": [245, 230, 211],
+        "CMYK": [0, 6, 14, 4]
+    }
+}

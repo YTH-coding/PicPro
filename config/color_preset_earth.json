@@ -1,0 +1,110 @@
+{
+    "earth_camel": {
+        "Chinese_name": "大地驼色",
+        "HEX": "#C49A6C",
+        "RGB": [196, 154, 108],
+        "CMYK": [0, 21, 45, 23]
+    },
+    "earth_coffee": {
+        "Chinese_name": "大地咖啡色",
+        "HEX": "#8C6A4E",
+        "RGB": [140, 106, 78],
+        "CMYK": [0, 24, 44, 45]
+    },
+    "earth_khaki": {
+        "Chinese_name": "大地卡其色",
+        "HEX": "#C0B094",
+        "RGB": [192, 176, 148],
+        "CMYK": [0, 8, 23, 25]
+    },
+    "earth_terracotta": {
+        "Chinese_name": "大地陶土色",
+        "HEX": "#BE7B5C",
+        "RGB": [190, 123, 92],
+        "CMYK": [0, 35, 52, 25]
+    },
+    "earth_sand": {
+        "Chinese_name": "大地沙色",
+        "HEX": "#DCC8A4",
+        "RGB": [220, 200, 164],
+        "CMYK": [0, 9, 25, 14]
+    },
+    "earth_mocha": {
+        "Chinese_name": "大地摩卡色",
+        "HEX": "#A9896C",
+        "RGB": [169, 137, 108],
+        "CMYK": [0, 19, 36, 34]
+    },
+    "earth_leather": {
+        "Chinese_name": "大地皮革棕",
+        "HEX": "#7B5B3A",
+        "RGB": [123, 91, 58],
+        "CMYK": [0, 26, 53, 52]
+    },
+    "earth_olive": {
+        "Chinese_name": "大地橄榄绿",
+        "HEX": "#8C8B63",
+        "RGB": [140, 139, 99],
+        "CMYK": [0, 1, 29, 45]
+    },
+    "earth_bark": {
+        "Chinese_name": "大地树皮褐",
+        "HEX": "#6B5344",
+        "RGB": [107, 83, 68],
+        "CMYK": [0, 22, 36, 58]
+    },
+    "earth_nut": {
+        "Chinese_name": "大地坚果色",
+        "HEX": "#A67B5B",
+        "RGB": [166, 123, 91],
+        "CMYK": [0, 26, 45, 35]
+    },
+    "earth_chestnut": {
+        "Chinese_name": "大地栗色",
+        "HEX": "#7B4B3A",
+        "RGB": [123, 75, 58],
+        "CMYK": [0, 39, 53, 52]
+    },
+    "earth_wheat": {
+        "Chinese_name": "大地麦色",
+        "HEX": "#D4C4A8",
+        "RGB": [212, 196, 168],
+        "CMYK": [0, 8, 21, 17]
+    },
+    "earth_autumn_leaf": {
+        "Chinese_name": "大地秋叶棕",
+        "HEX": "#AD7A4E",
+        "RGB": [173, 122, 78],
+        "CMYK": [0, 29, 55, 32]
+    },
+    "earth_deep_moss": {
+        "Chinese_name": "大地深苔色",
+        "HEX": "#7C8C5E",
+        "RGB": [124, 140, 94],
+        "CMYK": [11, 0, 33, 45]
+    },
+    "earth_smoke_grey": {
+        "Chinese_name": "大地烟灰色",
+        "HEX": "#A0978E",
+        "RGB": [160, 151, 142],
+        "CMYK": [0, 6, 11, 37]
+    },
+    "earth_warm_grey": {
+        "Chinese_name": "大地暖灰",
+        "HEX": "#B8B0A4",
+        "RGB": [184, 176, 164],
+        "CMYK": [0, 4, 11, 28]
+    },
+    "earth_red_clay": {
+        "Chinese_name": "大地红陶色",
+        "HEX": "#B57756",
+        "RGB": [181, 119, 86],
+        "CMYK": [0, 34, 52, 29]
+    },
+    "earth_mushroom": {
+        "Chinese_name": "大地菇色",
+        "HEX": "#C4B7A6",
+        "RGB": [196, 183, 166],
+        "CMYK": [0, 7, 15, 23]
+    }
+}

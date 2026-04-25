@@ -12,7 +12,7 @@ class NewPic():
         self.dialog = tk.Toplevel(parent)
         self._updating = False  # guard against recursive trace calls
 
-        self.dialog.title("ColorFul")
+        self.dialog.title("NewPic")
         self.dialog.configure(bg="#FFFFFF")
         self.dialog.geometry("900x600")
         self.dialog.minsize(900, 600)

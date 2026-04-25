@@ -1,0 +1,92 @@
+{
+    "summer_lavender_haze": {
+        "Chinese_name": "夏季薰衣草雾紫",
+        "HEX": "#D0C8E2",
+        "RGB": [208, 200, 226],
+        "CMYK": [8, 12, 0, 11]
+    },
+    "summer_ocean_blue": {
+        "Chinese_name": "夏季海水蓝",
+        "HEX": "#8DB5D6",
+        "RGB": [141, 181, 214],
+        "CMYK": [34, 15, 0, 16]
+    },
+    "summer_rose": {
+        "Chinese_name": "夏季柔玫瑰粉",
+        "HEX": "#E8C8CC",
+        "RGB": [232, 200, 204],
+        "CMYK": [0, 14, 12, 9]
+    },
+    "summer_sage": {
+        "Chinese_name": "夏季鼠尾草绿",
+        "HEX": "#B5BFAB",
+        "RGB": [181, 191, 171],
+        "CMYK": [5, 0, 10, 25]
+    },
+    "summer_cloud_white": {
+        "Chinese_name": "夏季云朵白",
+        "HEX": "#F2F4F7",
+        "RGB": [242, 244, 247],
+        "CMYK": [2, 1, 0, 3]
+    },
+    "summer_dusty_pink": {
+        "Chinese_name": "夏季灰粉",
+        "HEX": "#DDBBBF",
+        "RGB": [221, 187, 191],
+        "CMYK": [0, 15, 14, 13]
+    },
+    "summer_sky_blue": {
+        "Chinese_name": "夏季天蓝",
+        "HEX": "#AED4E8",
+        "RGB": [174, 212, 232],
+        "CMYK": [25, 9, 0, 9]
+    },
+    "summer_mint_cool": {
+        "Chinese_name": "夏季薄荷冷绿",
+        "HEX": "#C2DFD2",
+        "RGB": [194, 223, 210],
+        "CMYK": [13, 0, 6, 13]
+    },
+    "summer_wisteria": {
+        "Chinese_name": "夏季紫藤色",
+        "HEX": "#BDA5C8",
+        "RGB": [189, 165, 200],
+        "CMYK": [6, 18, 0, 22]
+    },
+    "summer_seafoam": {
+        "Chinese_name": "夏季海沫绿",
+        "HEX": "#C8E0D8",
+        "RGB": [200, 224, 216],
+        "CMYK": [11, 0, 4, 12]
+    },
+    "summer_hydrangea_blue": {
+        "Chinese_name": "夏季绣球蓝",
+        "HEX": "#9AB8D4",
+        "RGB": [154, 184, 212],
+        "CMYK": [27, 13, 0, 17]
+    },
+    "summer_watermelon": {
+        "Chinese_name": "夏季西瓜红",
+        "HEX": "#F0A8AD",
+        "RGB": [240, 168, 173],
+        "CMYK": [0, 30, 28, 6]
+    },
+    "summer_sand": {
+        "Chinese_name": "夏季沙色",
+        "HEX": "#E5D9CE",
+        "RGB": [229, 217, 206],
+        "CMYK": [0, 5, 10, 10]
+    },
+    "summer_periwinkle": {
+        "Chinese_name": "夏季蔓长春花紫",
+        "HEX": "#C3CDE6",
+        "RGB": [195, 205, 230],
+        "CMYK": [15, 11, 0, 10]
+    },
+    "summer_cool_grey": {
+        "Chinese_name": "夏季冷灰蓝",
+        "HEX": "#C5CCD3",
+        "RGB": [197, 204, 211],
+        "CMYK": [7, 3, 0, 17]
+    }
+}

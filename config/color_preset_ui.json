@@ -1,0 +1,92 @@
+{
+    "ui_primary_blue": {
+        "Chinese_name": "UI-主色蓝",
+        "HEX": "#1890FF",
+        "RGB": [24, 144, 255],
+        "CMYK": [91, 44, 0, 0]
+    },
+    "ui_primary_hover": {
+        "Chinese_name": "UI-主色悬停",
+        "HEX": "#40A9FF",
+        "RGB": [64, 169, 255],
+        "CMYK": [75, 34, 0, 0]
+    },
+    "ui_primary_active": {
+        "Chinese_name": "UI-主色按下",
+        "HEX": "#096DD9",
+        "RGB": [9, 109, 217],
+        "CMYK": [96, 50, 0, 15]
+    },
+    "ui_success_green": {
+        "Chinese_name": "UI-成功绿",
+        "HEX": "#52C41A",
+        "RGB": [82, 196, 26],
+        "CMYK": [58, 0, 87, 23]
+    },
+    "ui_warning_yellow": {
+        "Chinese_name": "UI-警告黄",
+        "HEX": "#FAAD14",
+        "RGB": [250, 173, 20],
+        "CMYK": [0, 31, 92, 2]
+    },
+    "ui_danger_red": {
+        "Chinese_name": "UI-危险红",
+        "HEX": "#FF4D4F",
+        "RGB": [255, 77, 79],
+        "CMYK": [0, 70, 69, 0]
+    },
+    "ui_info_cyan": {
+        "Chinese_name": "UI-信息青",
+        "HEX": "#1890FF",
+        "RGB": [24, 144, 255],
+        "CMYK": [91, 44, 0, 0]
+    },
+    "ui_text_primary": {
+        "Chinese_name": "UI-主要文字",
+        "HEX": "#262626",
+        "RGB": [38, 38, 38],
+        "CMYK": [0, 0, 0, 85]
+    },
+    "ui_text_secondary": {
+        "Chinese_name": "UI-次要文字",
+        "HEX": "#595959",
+        "RGB": [89, 89, 89],
+        "CMYK": [0, 0, 0, 65]
+    },
+    "ui_text_hint": {
+        "Chinese_name": "UI-占位提示",
+        "HEX": "#BFBFBF",
+        "RGB": [191, 191, 191],
+        "CMYK": [0, 0, 0, 25]
+    },
+    "ui_border_default": {
+        "Chinese_name": "UI-默认边框",
+        "HEX": "#D9D9D9",
+        "RGB": [217, 217, 217],
+        "CMYK": [0, 0, 0, 15]
+    },
+    "ui_background_white": {
+        "Chinese_name": "UI-背景纯白",
+        "HEX": "#FFFFFF",
+        "RGB": [255, 255, 255],
+        "CMYK": [0, 0, 0, 0]
+    },
+    "ui_background_grey": {
+        "Chinese_name": "UI-背景灰",
+        "HEX": "#F5F5F5",
+        "RGB": [245, 245, 245],
+        "CMYK": [0, 0, 0, 4]
+    },
+    "ui_disabled_grey": {
+        "Chinese_name": "UI-禁用灰",
+        "HEX": "#F0F0F0",
+        "RGB": [240, 240, 240],
+        "CMYK": [0, 0, 0, 6]
+    },
+    "ui_link_blue": {
+        "Chinese_name": "UI-链接蓝",
+        "HEX": "#1890FF",
+        "RGB": [24, 144, 255],
+        "CMYK": [91, 44, 0, 0]
+    }
+}

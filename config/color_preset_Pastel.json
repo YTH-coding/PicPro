@@ -58,5 +58,47 @@
         "HEX": "#F0C8E0",
         "RGB": [240, 200, 224],
         "CMYK": [0, 17, 7, 6]
+    },
+    "pastel_sky_blue": {
+        "Chinese_name": "蜡笔天蓝",
+        "HEX": "#C8E4F8",
+        "RGB": [200, 228, 248],
+        "CMYK": [19, 8, 0, 3]
+    },
+    "pastel_champagne_pink": {
+        "Chinese_name": "蜡笔香槟粉",
+        "HEX": "#F8E0D0",
+        "RGB": [248, 224, 208],
+        "CMYK": [0, 10, 16, 3]
+    },
+    "pastel_willow_green": {
+        "Chinese_name": "蜡笔柳芽绿",
+        "HEX": "#D8F0C8",
+        "RGB": [216, 240, 200],
+        "CMYK": [10, 0, 17, 6]
+    },
+    "pastel_lotus_purple": {
+        "Chinese_name": "蜡笔藕荷紫",
+        "HEX": "#E0D0E8",
+        "RGB": [224, 208, 232],
+        "CMYK": [3, 10, 0, 9]
+    },
+    "pastel_almond_yellow": {
+        "Chinese_name": "蜡笔杏仁黄",
+        "HEX": "#F8F0C8",
+        "RGB": [248, 240, 200],
+        "CMYK": [0, 3, 19, 3]
+    },
+    "pastel_fog_pink": {
+        "Chinese_name": "蜡笔雾粉",
+        "HEX": "#F0D8E0",
+        "RGB": [240, 216, 224],
+        "CMYK": [0, 10, 7, 6]
+    },
+    "pastel_bean_green": {
+        "Chinese_name": "蜡笔豆绿",
+        "HEX": "#D0E8D0",
+        "RGB": [208, 232, 208],
+        "CMYK": [10, 0, 10, 9]
     }
 }

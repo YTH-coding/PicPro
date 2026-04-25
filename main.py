@@ -20,6 +20,9 @@ class PicPro:
         self.root.geometry("1200x800")
         self.root.minsize(900, 600)
 
+        logo_img = tk.PhotoImage(file="logo.png")
+        self.root.iconphoto(True, logo_img)
+
         # 初始化图片变量
         self.original_image = None      # 原始 PIL Image
         self.original_array = None      # 原始 numpy array (RGB)
@@ -40,7 +43,16 @@ class PicPro:
             "中国传统色":"config\color_preset_chinese.json",
             "日本传统色":"config\color_preset_japanese.json",
             "莫兰迪色系":"config\color_preset_morandi.json",
-            "蜡笔色系Pastel":"config\color_preset_Pastel.json"
+            "蜡笔色系Pastel":"config\color_preset_Pastel.json",
+            "春天-spring":"config\color_preset_spring.json",
+            "夏天-summer":"config\color_preset_summer.json",
+            "秋天-autumn":"config\color_preset_autumn.json",
+            "冬天-winter":"config\color_preset_winter.json",
+            "糖果色系":"config\color_preset_candy.json",
+            "赛博朋克":"config\color_preset_cyber.json",
+            "大地色系":"config\color_preset_earth.json",
+            "肤色":"config\color_preset_skin.json",
+            "UI界面设计":"config\color_preset_ui.json"
         }
 
         self.workingspace = "workingspace"
@@ -102,7 +114,7 @@ class PicPro:
         left_frame.pack(side=tk.LEFT, fill=tk.Y)
 
         iobtn_frame = ttk.LabelFrame(left_frame, text="文件", padding=10)
-        iobtn_frame.pack(fill=tk.X, pady=5)
+        iobtn_frame.pack(fill=tk.X, pady=(0, 5), padx=(0, 10))
 
         self.file_operate = tk.StringVar(value="文件操作")
         # 获取矩阵名称列表
@@ -349,7 +361,7 @@ class PicPro:
     
     def create_workstream(self, parent):
         frame = ttk.LabelFrame(parent, text="工作流", padding=5)
-        frame.pack(fill=tk.X, pady=(0, 10))
+        frame.pack(fill=tk.X, pady=(0, 5), padx=(0, 10))
 
         self.work_type = tk.StringVar(value="暂存文件")
         

@@ -70,5 +70,41 @@
         "HEX": "#F4C2C2",
         "RGB": [244, 194, 194],
         "CMYK": [0, 20, 20, 4]
+    },
+    "macaron_haze_blue": {
+        "Chinese_name": "马卡龙雾霾蓝",
+        "HEX": "#B5C7D3",
+        "RGB": [181, 199, 211],
+        "CMYK": [14, 6, 0, 17]
+    },
+    "macaron_apricot": {
+        "Chinese_name": "马卡龙杏色",
+        "HEX": "#FAD6B1",
+        "RGB": [250, 214, 177],
+        "CMYK": [0, 14, 29, 2]
+    },
+    "macaron_taro_purple": {
+        "Chinese_name": "马卡龙香芋紫",
+        "HEX": "#D8C2D9",
+        "RGB": [216, 194, 217],
+        "CMYK": [0, 10, 0, 15]
+    },
+    "macaron_baby_blue": {
+        "Chinese_name": "马卡龙婴儿蓝",
+        "HEX": "#C4E0E8",
+        "RGB": [196, 224, 232],
+        "CMYK": [16, 3, 0, 9]
+    },
+    "macaron_strawberry": {
+        "Chinese_name": "马卡龙草莓粉",
+        "HEX": "#F5C6C6",
+        "RGB": [245, 198, 198],
+        "CMYK": [0, 19, 19, 4]
+    },
+    "macaron_pistachio": {
+        "Chinese_name": "马卡龙开心果绿",
+        "HEX": "#C7E5C1",
+        "RGB": [199, 229, 193],
+        "CMYK": [13, 0, 16, 10]
     }
 }
